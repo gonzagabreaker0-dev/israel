@@ -28,8 +28,8 @@ VO = [
     (20.8, "Every shot... pulled to perfection."),
     (25.4, "Rich. Bold. Velvety."),
     (32.3, "Every cup... a little work of art."),
-    (42.4, "Great coffee. Fast wifi. Space to create."),
-    (46.6, "This... is your daily ritual."),
+    (42.3, "Great coffee. Space to create."),
+    (46.4, "This... is your daily ritual."),
     (53.6, "Israel Coffee Shop."),
     (56.3, "Visit us today."),
 ]
@@ -190,7 +190,9 @@ def bed(seconds, lo, hi, flutter=0.0, rate=8):
     n = int(seconds * SR); t = tt(n)
     x = norm(band(noise(seconds), lo, hi))
     if flutter:
-        m = np.convolve(rng.standard_normal(n), np.ones(int(SR / rate)) / int(SR / rate), 'same')
+        k = int(SR / rate)
+        c = np.cumsum(np.concatenate([np.zeros(k), rng.standard_normal(n + k)]))
+        m = (c[k:k + n] - c[:n]) / k  # moving average
         x *= 1 + flutter * norm(m)
     return x
 
