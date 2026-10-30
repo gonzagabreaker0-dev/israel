@@ -3,6 +3,7 @@
 //   node render.mjs --w 1920 --h 1080    -> landscape cut
 //   node render.mjs --stills 2,14,25     -> JPEG stills only (quick preview)
 //   node render.mjs --from 19 --to 31    -> render a time range
+//   node render.mjs --page endcard.html --to 5 --out endcard.mp4   -> owners end card
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -14,11 +15,12 @@ const arg = (k, d) => { const i = process.argv.indexOf('--' + k); return i > 0 ?
 const W = +arg('w', 1080), H = +arg('h', 1920), FPS = +arg('fps', 30);
 const FROM = +arg('from', 0), TO = +arg('to', 60);
 const stills = arg('stills');
+const PAGE = arg('page', 'index.html');
 const root = path.dirname(new URL(import.meta.url).pathname);
 const outDir = path.join(root, 'out');
 fs.mkdirSync(outDir, { recursive: true });
 
-const types = { '.html': 'text/html', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.json': 'application/json' };
+const types = { '.html': 'text/html', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.json': 'application/json', '.jpg': 'image/jpeg' };
 const server = http.createServer((req, res) => {
   const file = path.join(root, decodeURIComponent(new URL(req.url, 'http://x').pathname));
   if (!file.startsWith(root) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) { res.writeHead(404).end(); return; }
@@ -31,7 +33,7 @@ const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--ena
 const page = await browser.newPage({ viewport: { width: W, height: H } });
 page.on('console', (m) => m.type() === 'error' && console.error('[page]', m.text()));
 page.on('pageerror', (e) => console.error('[page]', e.message));
-await page.goto(`http://localhost:${port}/index.html?render=1&w=${W}&h=${H}`);
+await page.goto(`http://localhost:${port}/${PAGE}?render=1&w=${W}&h=${H}`);
 await page.waitForFunction(() => window.REEL?.ready, null, { timeout: 120000 });
 const stage = page.locator('#stage');
 

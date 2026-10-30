@@ -12,7 +12,7 @@ import wave
 import numpy as np
 
 SR = 44100
-DUR = 60.0
+DUR = 65.0  # 60s reel + 5s owners end card
 N = int(SR * DUR)
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, '..', 'out')
@@ -32,6 +32,7 @@ VO = [
     (46.4, "This... is your daily ritual."),
     (53.6, "Israel Coffee Shop."),
     (56.3, "Visit us today."),
+    (61.0, "Meet the owners... Israel and Mariella."),
 ]
 
 
@@ -276,7 +277,12 @@ def sfx():
     add(S, impact(), 54.15, 0.6)
     for k, f in enumerate((1318.5, 1760, 2637)):
         add(S, chime(f, 3), 53.4 + 0.35 * k, 0.12)
-    add(S, reverb(boom(4.5, 45, 22), 3.5, 0.4), 58.3, 0.35)  # final low drop under the fade
+    # owners end card: soft hit + shimmer as the photo lands, low drop under the final fade
+    add(S, whoosh(1.2), 59.4, 0.3)
+    add(S, impact(), 60.25, 0.35)
+    add(S, chime(1046.5, 3.5), 60.3, 0.1)
+    add(S, chime(1568, 3.5), 60.6, 0.08)
+    add(S, reverb(boom(4.5, 45, 22), 3.5, 0.4), 63.4, 0.25)
     t = tt(N)
     S *= (np.clip((DUR - t) / 1.2, 0, 1))[:, None]
     return S
