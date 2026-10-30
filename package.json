@@ -1,0 +1,27 @@
+{
+  "name": "ids-coffee-reel",
+  "version": "1.0.0",
+  "description": "60s cinematic 3D reel for Israel Digital Solutions Coffee House (Three.js)",
+  "scripts": {
+    "serve": "npx http-server -c-1 .",
+    "render": "node render.mjs",
+    "render:landscape": "node render.mjs --w 1920 --h 1080",
+    "stills": "node render.mjs --stills 4,14,24,36,46,56"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gonzagabreaker0-dev/israel.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gonzagabreaker0-dev/israel/issues"
+  },
+  "homepage": "https://github.com/gonzagabreaker0-dev/israel#readme",
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/playfair-display": "^5.3.0",
+    "three": "^0.170.0"
+  },
+  "type": "module"
+}
