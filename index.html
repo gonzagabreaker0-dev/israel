@@ -3,14 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Coffee House Reel</title>
+<title>Israel Coffee Shop Reel</title>
 <style>
-  @font-face { font-family: "Playfair Display"; font-weight: 700; font-style: normal; src: url(fonts/playfair-display-latin-700-normal.woff2) format("woff2"); }
-  @font-face { font-family: "Playfair Display"; font-weight: 700; font-style: italic; src: url(fonts/playfair-display-latin-700-italic.woff2) format("woff2"); }
-  @font-face { font-family: "Playfair Display"; font-weight: 400; font-style: italic; src: url(fonts/playfair-display-latin-400-italic.woff2) format("woff2"); }
-  @font-face { font-family: "Inter"; font-weight: 400; src: url(fonts/inter-latin-400-normal.woff2) format("woff2"); }
-  @font-face { font-family: "Inter"; font-weight: 600; src: url(fonts/inter-latin-600-normal.woff2) format("woff2"); }
-  @font-face { font-family: "Inter"; font-weight: 800; src: url(fonts/inter-latin-800-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Poppins"; font-weight: 400; font-style: normal; src: url(fonts/poppins-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; src: url(fonts/poppins-latin-600-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; src: url(fonts/poppins-latin-700-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Poppins"; font-weight: 700; font-style: italic; src: url(fonts/poppins-latin-700-italic.woff2) format("woff2"); }
+  @font-face { font-family: "Poppins"; font-weight: 800; font-style: normal; src: url(fonts/poppins-latin-800-normal.woff2) format("woff2"); }
 
   :root {
     --cream: #fff3e2;
@@ -19,7 +18,7 @@
     --sky: #8fd0ff;
   }
   html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
-  body { display: grid; place-items: center; font-family: Inter, system-ui, sans-serif; }
+  body { display: grid; place-items: center; font-family: Poppins, system-ui, sans-serif; }
 
   #stage { position: relative; overflow: hidden; container-type: size; background: #000; }
   #stage > * { position: absolute; inset: 0; }
@@ -35,7 +34,7 @@
 
   /* brand bug */
   #bug { inset: auto; top: 4.5cqh; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 1.6cqw;
-    color: var(--cream); font: 600 2.1cqw/1 Inter; letter-spacing: .32em; text-transform: uppercase; opacity: 0; }
+    color: var(--cream); font: 600 2.1cqw/1 Poppins; letter-spacing: .32em; text-transform: uppercase; opacity: 0; }
   #bug img { width: 4.2cqw; height: 4.2cqw; }
 
   /* captions */
@@ -45,26 +44,26 @@
   .cap.lower  { top: 63cqh; }
   .cap.lower::before { content: ""; position: absolute; inset: -8cqh -10cqw; z-index: -1; background: radial-gradient(closest-side, rgba(10,6,4,.55), transparent); }
   .kicker { text-shadow: 0 0 1.5cqw rgba(0,0,0,.8); }
-  .cap.outro  { top: 49cqh; }
+  .cap.outro  { top: 53cqh; }
   .line { display: block; overflow: hidden; padding: .08em 0 .14em; }
   .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .02em; }
   .wi { display: inline-block; will-change: transform; }
-  .kicker { font: 600 2.5cqw/1.2 Inter; letter-spacing: .38em; text-transform: uppercase; color: var(--latte); margin-bottom: 1.6cqh; }
+  .kicker { font: 600 2.5cqw/1.2 Poppins; letter-spacing: .38em; text-transform: uppercase; color: var(--latte); margin-bottom: 1.6cqh; }
   .kicker .wi::before { content: ""; }
-  .title { font: 700 italic 10.5cqw/1.02 "Playfair Display"; text-shadow: 0 .6cqw 3cqw rgba(0,0,0,.55); }
-  .brand { font: 700 12cqw/1 "Playfair Display"; letter-spacing: -.01em; text-shadow: 0 .6cqw 3cqw rgba(0,0,0,.6); }
-  .sub { font: 400 3.4cqw/1.4 Inter; color: var(--latte); letter-spacing: .04em; margin-top: 1.6cqh; }
-  .cta .wi { font: 800 2.8cqw/1 Inter; letter-spacing: .3em; text-transform: uppercase; color: #0b1630;
+  .title { font: 700 9.6cqw/1.08 Poppins; letter-spacing: -.02em; text-shadow: 0 .6cqw 3cqw rgba(0,0,0,.55); }
+  .brand { font: 800 12cqw/1.02 Poppins; letter-spacing: -.03em; text-shadow: 0 .6cqw 3cqw rgba(0,0,0,.6); }
+  .sub { font: 400 3.4cqw/1.4 Poppins; color: var(--latte); letter-spacing: .04em; margin-top: 1.6cqh; }
+  .cta .wi { font: 800 2.8cqw/1 Poppins; letter-spacing: .3em; text-transform: uppercase; color: #0b1630;
     background: linear-gradient(135deg, var(--sky), var(--blue)); padding: 1.8cqw 4.4cqw 1.8cqw 4.7cqw; border-radius: 99px; margin-top: 3cqh; }
   .rule { display: block; width: 14cqw; height: 2px; margin: 1.6cqh auto 0; background: linear-gradient(90deg, transparent, var(--latte), transparent); transform-origin: center; }
 
   /* live player ui */
   #ui { inset: auto 0 0 0; padding: 3cqw 4cqw; display: flex; gap: 3cqw; align-items: center;
-    background: linear-gradient(transparent, rgba(0,0,0,.7)); transition: opacity .4s; color: #fff; font: 600 2.6cqw Inter; }
+    background: linear-gradient(transparent, rgba(0,0,0,.7)); transition: opacity .4s; color: #fff; font: 600 2.6cqw Poppins; }
   #ui.hide { opacity: 0; }
   #ui button { all: unset; cursor: pointer; width: 7cqw; height: 7cqw; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.15); }
   #ui input { flex: 1; accent-color: var(--blue); }
-  #hint { inset: auto; left: 0; right: 0; bottom: 14cqh; text-align: center; color: rgba(255,255,255,.8); font: 600 2.6cqw Inter; letter-spacing: .2em; text-transform: uppercase; }
+  #hint { inset: auto; left: 0; right: 0; bottom: 14cqh; text-align: center; color: rgba(255,255,255,.8); font: 600 2.6cqw Poppins; letter-spacing: .2em; text-transform: uppercase; }
   body.render #ui, body.render #hint { display: none; }
 </style>
 <script type="importmap">
@@ -80,7 +79,7 @@
   <div id="vignette"></div>
   <div id="leak"></div>
   <div id="grain"></div>
-  <div id="bug"><img src="logo.svg" alt=""><span>Israel Digital Solutions</span></div>
+  <div id="bug"><img src="logo.svg" alt=""><span>Israel Coffee Shop</span></div>
   <div id="captions"></div>
   <div id="flash"></div>
   <div id="black"></div>

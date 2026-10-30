@@ -1,4 +1,4 @@
-// Israel Digital Solutions — Coffee House · 60s cinematic reel
+// Israel Coffee Shop · 60s cinematic reel
 // Every frame is a pure function of time t, so the same code plays live in the
 // browser and renders frame-perfect video via render.mjs.
 import * as THREE from 'three';
@@ -326,7 +326,7 @@ function rig(posKeys, lookKeys) {
 
 // ---------------------------------------------------------------- shots
 // fonts must be loaded before any shot draws text into a canvas texture
-await Promise.all(['700 italic 50px "Playfair Display"', '700 50px "Playfair Display"', '600 20px Inter', '800 20px Inter', '400 20px Inter'].map((f) => document.fonts.load(f)));
+await Promise.all(['700 italic 50px Poppins', '700 50px Poppins', '600 20px Poppins', '800 20px Poppins', '400 20px Poppins'].map((f) => document.fonts.load(f)));
 const shots = [];
 function shot(name, start, end, build) {
   const group = new THREE.Group();
@@ -463,7 +463,7 @@ shot('espresso', 19, 31, (g) => {
     c.fillStyle = '#f4f1ea'; c.beginPath(); c.arc(128, 128, 124, 0, 7); c.fill();
     c.strokeStyle = '#222'; c.lineWidth = 4;
     for (let i = 0; i <= 12; i++) { const a = Math.PI * 0.75 + (i / 12) * Math.PI * 1.5; c.beginPath(); c.moveTo(128 + Math.cos(a) * 100, 128 + Math.sin(a) * 100); c.lineTo(128 + Math.cos(a) * 115, 128 + Math.sin(a) * 115); c.stroke(); }
-    c.fillStyle = '#222'; c.font = '600 26px Inter'; c.textAlign = 'center'; c.fillText('BAR', 128, 190);
+    c.fillStyle = '#222'; c.font = '600 26px Poppins'; c.textAlign = 'center'; c.fillText('BAR', 128, 190);
   });
   const gauge = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.04, 48), [M.steel, new THREE.MeshStandardMaterial({ map: gaugeTex, roughness: 0.3 }), M.steel]);
   gauge.rotation.x = Math.PI / 2; gauge.position.set(0.55, 0.95, -0.03); g.add(gauge);
@@ -614,8 +614,8 @@ shot('counter', 41, 51, (g) => {
   const label = canvasTex(256, 320, (c, w, h) => {
     c.fillStyle = '#c9a678'; c.fillRect(0, 0, w, h);
     c.fillStyle = '#14151b'; c.fillRect(0, 90, w, 150);
-    c.fillStyle = '#8fd0ff'; c.font = '700 italic 54px "Playfair Display"'; c.textAlign = 'center'; c.fillText('IDS', w / 2, 168);
-    c.fillStyle = '#e8d2b4'; c.font = '600 20px Inter'; c.fillText('HOUSE BLEND', w / 2, 212);
+    c.fillStyle = '#8fd0ff'; c.font = '800 40px Poppins'; c.textAlign = 'center'; c.fillText('ISRAEL', w / 2, 166);
+    c.fillStyle = '#e8d2b4'; c.font = '600 20px Poppins'; c.fillText('HOUSE BLEND', w / 2, 212);
   });
   const bagMat = [0, 0, 0, 0, new THREE.MeshStandardMaterial({ map: label, roughness: 0.8 }), 0].map((m) => m || new THREE.MeshStandardMaterial({ color: 0xb8956a, roughness: 0.85 }));
   const R = rng(54);
@@ -635,14 +635,14 @@ shot('counter', 41, 51, (g) => {
   const neon = canvasTex(1024, 640, (c, w) => {
     c.textAlign = 'center';
     const glow = (fn) => { for (const [b, col] of [[40, '#3d8ef0'], [18, '#8fd0ff'], [0, '#e8f6ff']]) { c.shadowBlur = b; c.shadowColor = '#3d8ef0'; c.fillStyle = col; fn(); } };
-    glow(() => { c.font = '700 italic 150px "Playfair Display"'; c.fillText('Israel Digital', w / 2, 230); });
-    glow(() => { c.font = '800 92px Inter'; c.letterSpacing = '22px'; c.fillText('SOLUTIONS', w / 2 + 11, 360); });
-    c.shadowBlur = 24; c.shadowColor = '#ff9a4a'; c.fillStyle = '#ffd2a0'; c.font = '600 46px Inter'; c.letterSpacing = '16px';
-    c.fillText('— COFFEE HOUSE —', w / 2 + 8, 470);
+    glow(() => { c.font = '800 200px Poppins'; c.letterSpacing = '6px'; c.fillText('Israel', w / 2, 250); });
+    glow(() => { c.font = '700 84px Poppins'; c.letterSpacing = '20px'; c.fillText('COFFEE SHOP', w / 2 + 10, 370); });
+    c.shadowBlur = 24; c.shadowColor = '#ff9a4a'; c.fillStyle = '#ffd2a0'; c.font = '600 46px Poppins'; c.letterSpacing = '16px';
+    c.fillText('— FRESH · DAILY —', w / 2 + 8, 470);
   });
-  const sign = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 2.25), new THREE.MeshBasicMaterial({ map: neon, transparent: true, toneMapped: false, color: new THREE.Color(1.1, 1.1, 1.1) }));
-  sign.position.set(4.6, 2.55, -2.55); g.add(sign);
-  const signLight = new THREE.PointLight(0x3d8ef0, 3, 6, 1.5); signLight.position.set(4.6, 2.4, -1.6); g.add(signLight);
+  const sign = new THREE.Mesh(new THREE.PlaneGeometry(2.3, 1.44), new THREE.MeshBasicMaterial({ map: neon, transparent: true, toneMapped: false, color: new THREE.Color(1.1, 1.1, 1.1) }));
+  sign.position.set(5.75, 2.5, -2.55); g.add(sign);
+  const signLight = new THREE.PointLight(0x3d8ef0, 3, 6, 1.5); signLight.position.set(5.75, 2.4, -1.6); g.add(signLight);
   // laptop — the "digital" in the coffee house
   const lap = new THREE.Group();
   const screenTex = canvasTex(512, 320, (c, w, h) => {
@@ -764,12 +764,12 @@ shot('outro', 51, 60, (g) => {
 
 // ---------------------------------------------------------------- captions
 const CAPTIONS = [
-  { t0: 1.0, t1: 8.3, pos: 'center', lines: [['kicker', 'Israel Digital Solutions'], ['title', 'Coffee House'], ['rule'], ['sub', 'Where great coffee meets great ideas']] },
+  { t0: 1.0, t1: 8.3, pos: 'center', lines: [['kicker', 'Welcome to'], ['title', 'Israel Coffee Shop'], ['rule'], ['sub', 'Where great coffee meets great ideas']] },
   { t0: 10.3, t1: 18.2, pos: 'lower', lines: [['kicker', '01 — The Bean'], ['title', 'Hand-picked.'], ['title', 'Fresh roasted.']] },
   { t0: 20.4, t1: 30.4, pos: 'lower', lines: [['kicker', '02 — The Shot'], ['title', 'Pulled to perfection'], ['sub', 'Rich  ·  Bold  ·  Velvety']] },
   { t0: 32.0, t1: 40.3, pos: 'lower', lines: [['kicker', '03 — The Craft'], ['title', 'Every cup,'], ['title', 'a little art']] },
   { t0: 42.0, t1: 50.3, pos: 'lower', lines: [['kicker', '04 — The Ritual'], ['title', 'Your daily ritual'], ['sub', 'Great coffee · Fast Wi-Fi · Space to create']] },
-  { t0: 53.6, t1: 59.4, pos: 'outro', lines: [['kicker', 'Coffee House'], ['brand', 'Israel Digital'], ['brand', 'Solutions'], ['sub', 'Coffee · Code · Community'], ['cta', 'Visit us today']] },
+  { t0: 53.6, t1: 59.4, pos: 'outro', lines: [['kicker', 'Your new favorite spot'], ['brand', 'Israel'], ['brand', 'Coffee Shop'], ['sub', 'Coffee · Community · Good Vibes'], ['cta', 'Visit us today']] },
 ];
 const capRoot = document.getElementById('captions');
 for (const cap of CAPTIONS) {
