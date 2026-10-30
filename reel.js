@@ -327,6 +327,9 @@ function rig(posKeys, lookKeys) {
 // ---------------------------------------------------------------- shots
 // fonts must be loaded before any shot draws text into a canvas texture
 await Promise.all(['700 italic 50px Poppins', '700 50px Poppins', '600 20px Poppins', '800 20px Poppins', '400 20px Poppins'].map((f) => document.fonts.load(f)));
+const ownersPhoto = await new THREE.TextureLoader().loadAsync('assets/owners.jpg');
+ownersPhoto.colorSpace = THREE.SRGBColorSpace;
+ownersPhoto.anisotropy = 8;
 const shots = [];
 function shot(name, start, end, build) {
   const group = new THREE.Group();
@@ -660,6 +663,23 @@ shot('counter', 41, 51, (g) => {
     const c = makeCup(latteDone); c.setLevel(0.5); c.position.set(x, 1.0, z); c.rotation.y = ry; c.scale.setScalar(0.92); g.add(c);
   }
   const hero = makeCup(latteDone); hero.setLevel(0.5); hero.rotation.y = 0.5; g.add(hero);
+  // framed photo of Israel & Mariella standing on the counter where the cup comes to rest
+  const photo = new THREE.Group();
+  const frameW = 1.05, frameH = 0.76, mat = 0.05, border = 0.045;
+  const frame = new THREE.Mesh(new THREE.BoxGeometry(frameW, frameH, 0.04), new THREE.MeshStandardMaterial({ map: woodTex(71, [60, 36, 20]), roughness: 0.4 }));
+  const matBoard = new THREE.Mesh(new THREE.PlaneGeometry(frameW - border * 2, frameH - border * 2), new THREE.MeshStandardMaterial({ color: 0xf3ece2, roughness: 0.9 }));
+  matBoard.position.z = 0.021;
+  const pic = new THREE.Mesh(new THREE.PlaneGeometry(frameW - (border + mat) * 2, frameH - (border + mat) * 2),
+    new THREE.MeshPhysicalMaterial({ map: ownersPhoto, color: 0xcfcfcf, roughness: 0.4, clearcoat: 0.3, clearcoatRoughness: 0.25 }));
+  pic.position.z = 0.023;
+  const strut = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.6, 0.02), frame.material);
+  strut.position.set(0, -0.12, -0.16); strut.rotation.x = -0.45;
+  photo.add(frame, matBoard, pic, strut);
+  photo.traverse((m) => (m.castShadow = true));
+  photo.position.set(5.25, 1.0 + frameH / 2 - 0.02, -0.38); photo.rotation.set(-0.12, -0.38, 0);
+  g.add(photo);
+  const photoLight = new THREE.SpotLight(0xffd8b0, 2.5, 4, 0.5, 0.8, 1.5);
+  photoLight.position.set(4.2, 2.2, 1.0); photoLight.target = photo; g.add(photoLight);
   const steam = makeSteam(20, 57, { height: 0.9, size: 0.42 }); g.add(steam);
   // pendant lamps + fairy lights
   for (const x of [-6.5, -3.25, 0, 3.25, 6.5]) {
@@ -679,7 +699,7 @@ shot('counter', 41, 51, (g) => {
   const fg = makeBokeh(16, 58, [-8, 9, 0.6, 2.2, 2.0, 2.6], [0xffb070, 0xffe0b0], [0.25, 0.6], 0.22);
   const bg = makeBokeh(30, 59, [-10, 10, 1.5, 4, -2.4, -2.2], [0xffb070, 0x3d8ef0], [0.12, 0.35], 0.3);
   g.add(fg, bg);
-  const xAt = (t) => lerp(-5.6, 4.7, easeInOut(range(t, 0.2, 8.6)));
+  const xAt = (t) => lerp(-5.6, 4.15, easeInOut(range(t, 0.2, 8.6)));
   return {
     bg: new THREE.Color(0x0b0807), fog: new THREE.FogExp2(0x0b0807, 0.05), env: 0.3,
     update(lt) {
@@ -691,8 +711,8 @@ shot('counter', 41, 51, (g) => {
       key.position.set(x - 1.2, 3.4, 1.6); key.target.position.set(x, 1, 0);
       // follow-cam with a little lag, then a slow push-in at the hero sign
       const cx = xAt(lt - 0.35), push = easeInOut(range(lt, 7.8, 10));
-      camera.position.set(cx - 0.75 + 0.15 * Math.sin(lt * 0.5) + push * 0.55, 1.62 - push * 0.08, lerp(2.8, 2.15, push));
-      camera.lookAt(cx + 0.25 + push * 0.15, lerp(1.45, 1.6, push), 0);
+      camera.position.set(cx - 0.75 + 0.15 * Math.sin(lt * 0.5) + push * 0.8, 1.62 - push * 0.05, lerp(2.8, 3.05, push));
+      camera.lookAt(cx + 0.25 + push * 0.5, lerp(1.45, 1.42, push), 0);
       fg.update(lt); bg.update(lt);
     },
   };

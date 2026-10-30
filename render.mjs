@@ -3,7 +3,6 @@
 //   node render.mjs --w 1920 --h 1080    -> landscape cut
 //   node render.mjs --stills 2,14,25     -> JPEG stills only (quick preview)
 //   node render.mjs --from 19 --to 31    -> render a time range
-//   node render.mjs --page endcard.html --to 5 --out endcard.mp4   -> owners end card
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
