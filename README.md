@@ -44,3 +44,20 @@ Rendering needs `ffmpeg` and Playwright's Chromium. It drives `window.REEL.rende
 
 The video is silent. Add a track in your editor or in the app when you post (trending audio usually performs best), or mux one in:
 `ffmpeg -i out/reel-1080x1920.mp4 -i music.mp3 -shortest -c:v copy -c:a aac out/reel-with-music.mp4`
+
+## Video skills (Claude Code)
+
+`.claude/skills/` holds 30 video skills that Claude Code loads automatically in this repo: editing, motion graphics, Shorts, analysis and captions, color/audio/AI generation, and full workflows. Start with `superpowers`, which says which skill fits which job.
+
+They run on `tools/vid.py`, an ffmpeg toolkit (`python3 tools/vid.py -h`):
+
+```bash
+python3 tools/vid.py silence-cut raw.mp4 out/tight.mp4        # remove pauses
+python3 tools/vid.py transcribe out/tight.mp4                  # .srt + word timings (pip install faster-whisper)
+python3 tools/vid.py captions out/tight.mp4 out/tight.words.json out/cap.mp4 --style karaoke
+python3 tools/vid.py reframe in.mp4 out/vertical.mp4 --mode blur
+python3 tools/vid.py grade in.mp4 out/graded.mp4 --look warm --strength 0.7
+python3 tools/vid.py export out/cap.mp4 out/final.mp4 --preset reels
+```
+
+The AI-generation skills (`pexo-agent`, `higgsfield-skills`, `kling-ai-skills`) cover planning, prompting and assembly. Generating clips needs your own account and API key with those providers.
