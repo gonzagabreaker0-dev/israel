@@ -66,14 +66,8 @@ svg.lines { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; 
 <body>
 <div id="stage">
   <div id="logo" class="abs"></div>
-  <div id="ins-sym" class="ins"><div class="grid-wall"></div><div class="floor-wrap"><div class="floor"></div></div>
-    <div class="title" style="top:262px">LOW THYROID SIGNS</div><svg class="lines" id="sym-lines"></svg><div id="sym-nodes"></div></div>
-  <div id="ins-lab" class="ins"><div class="grid-wall"></div><div class="floor-wrap"><div class="floor"></div></div>
-    <div class="title" style="top:300px">THE THYROID PANEL</div><div id="lab-cards"></div></div>
-  <div id="ins-hor" class="ins"><div class="grid-wall"></div><div class="floor-wrap"><div class="floor"></div></div>
-    <div class="title" style="top:300px">PERIMENOPAUSE</div><div id="hor"></div></div>
-  <div id="ins-str" class="ins"><div class="grid-wall"></div><div class="floor-wrap"><div class="floor"></div></div>
-    <div class="title" style="top:300px">STRESS vs THYROID</div><div id="str"></div></div>
+  <div id="ins" class="ins"><div class="grid-wall"></div><div class="floor-wrap"><div class="floor"></div></div>
+    <div class="title" id="ins-title"></div><svg class="lines" id="ins-lines"></svg><div id="ins-body"></div></div>
   <div id="cta"><div class="ic"></div><div><div class="t1"></div><div class="t2"></div></div></div>
   <div id="cap"></div>
   <div id="flash"></div>
@@ -114,85 +108,104 @@ function renderCaptions(t) {
   });
 }
 
-// ---------- symptoms ----------
-const SYM_C = [540, 760];
-const SYM_POS = [[255, 520], [825, 520], [255, 760], [825, 760], [255, 1000], [825, 1000]];
-function renderSymptoms(t, ins) {
-  const list = TL.inserts.filter((x) => x.type === 'symptoms');
-  const k = list.indexOf(ins), lt = t - ins.s;
-  let lines = '', nodes = `<div class="node big" style="left:${SYM_C[0]}px;top:${SYM_C[1]}px;transform:scale(${0.92 + 0.08 * backOut(lt / 0.35)})">${svg('faUser')}</div>`;
-  for (let j = 0; j <= k && j < SYM_POS.length; j++) {
-    const [x, y] = SYM_POS[j];
-    const fresh = j === k, p = fresh ? (lt - 0.18) / 0.35 : 1;
+// ---------- generic inserts ----------
+// Inserts sharing a `group` build on each other (items added in earlier ones stay on screen).
+const groupOf = (ins) => TL.inserts.filter((x) => (x.group || x.type) === (ins.group || ins.type));
+const icon = (n, fill) => svg(n || 'faCircle').replace('<svg', `<svg style="fill:${fill || '#0b0d12'}"`);
+const COLORS = { yellow: ['#ffe95c', '#e0b400', 'rgba(242,229,0,.5)'], blue: ['#6fb6ff', '#1e4ae0', 'rgba(30,74,224,.6)'], red: ['#ff7a80', '#e5232b', 'rgba(229,35,43,.55)'], white: ['#ffffff', '#cfd6e0', 'rgba(255,255,255,.5)'] };
+const NODE_POS = [[255, 520], [825, 520], [255, 760], [825, 760], [255, 1000], [825, 1000]];
+const CENTER = [540, 760];
+
+function rNodes(t, ins, lt) {
+  const list = groupOf(ins), k = list.indexOf(ins);
+  let lines = '', html = `<div class="node big" style="left:${CENTER[0]}px;top:${CENTER[1]}px;transform:scale(${0.92 + 0.08 * backOut(lt / 0.35)})">${icon(list[0].center?.icon || 'faUser')}</div>`;
+  for (let j = 0; j <= k && j < NODE_POS.length; j++) {
+    const [x, y] = NODE_POS[j], fresh = j === k, p = fresh ? (lt - 0.18) / 0.35 : 1;
     if (p <= 0) continue;
     const q = clamp(p * 1.6);
-    lines += `<line x1="${SYM_C[0]}" y1="${SYM_C[1]}" x2="${SYM_C[0] + (x - SYM_C[0]) * q}" y2="${SYM_C[1] + (y - SYM_C[1]) * q}" stroke="#fff" stroke-width="5" style="filter:drop-shadow(0 0 6px #fff)"/>`;
-    if (p > 0.3) nodes += `<div class="node" style="left:${x}px;top:${y}px;transform:scale(${backOut((p - 0.3) / 0.7)})${fresh ? '' : ';opacity:.8'}">${svg(list[j].add.icon)}</div>`;
+    lines += `<line x1="${CENTER[0]}" y1="${CENTER[1]}" x2="${CENTER[0] + (x - CENTER[0]) * q}" y2="${CENTER[1] + (y - CENTER[1]) * q}" stroke="#fff" stroke-width="5" style="filter:drop-shadow(0 0 6px #fff)"/>`;
+    if (p > 0.3) html += `<div class="node" style="left:${x}px;top:${y}px;transform:scale(${backOut((p - 0.3) / 0.7)})${fresh ? '' : ';opacity:.8'}">${icon(list[j].add.icon)}</div>`;
     const tp = fresh ? (lt - 0.45) / 0.5 : 1;
-    if (tp > 0) nodes += `<div class="lbl" style="left:${x}px;top:${j < 2 ? y - 140 : y + 88}px;font-size:${fresh ? 32 : 27}px;${fresh ? '' : 'opacity:.7'}">${typed(list[j].add.label, tp)}</div>`;
+    if (tp > 0) html += `<div class="lbl" style="left:${x}px;top:${j < 2 ? y - 140 : y + 88}px;font-size:${fresh ? 32 : 27}px;${fresh ? '' : 'opacity:.7'}">${typed(list[j].add.label, tp)}</div>`;
   }
-  $('#sym-lines').innerHTML = lines; $('#sym-nodes').innerHTML = nodes;
+  return [html, lines];
 }
 
-// ---------- labs ----------
-const LAB_POS = { 'TSH': [110, 480], 'FREE T3': [560, 480], 'FREE T4': [110, 770], 'REVERSE T3': [560, 770] };
-function renderLabs(t, ins) {
-  const list = TL.inserts.filter((x) => x.type === 'labs');
-  const k = list.indexOf(ins), prev = k > 0 ? list[k - 1].show : [];
-  const lt = t - ins.s; let html = ''; let n = 0;
+function rCards(t, ins, lt) {
+  const list = groupOf(ins), k = list.indexOf(ins);
+  const order = []; list.forEach((x) => x.show.forEach((n) => { if (!order.includes(n)) order.push(n); }));
+  const prev = k > 0 ? list[k - 1].show : [];
+  const rows = Math.ceil(order.length / 2), top0 = rows > 2 ? 420 : 480;
+  const pos = (n) => { const i = order.indexOf(n); return [i % 2 ? 560 : 110, top0 + Math.floor(i / 2) * 270]; };
+  let html = '', n = 0;
   for (const name of ins.show) {
-    const fresh = !prev.includes(name);
-    const p = fresh ? (lt - 0.15 - 0.22 * n++) / 0.4 : 1;
+    const fresh = !prev.includes(name), p = fresh ? (lt - 0.15 - 0.22 * n++) / 0.4 : 1;
     if (p <= 0) continue;
-    const [x, y] = LAB_POS[name];
-    html += `<div class="card" style="left:${x}px;top:${y}px;transform:scale(${backOut(p)});opacity:${clamp(p * 2)}">${svg('faVial')}<div class="n" style="font-size:${name.length > 7 ? 52 : 66}px">${name}</div></div>`;
+    const [x, y] = pos(name), ic = (ins.icons || list[0].icons || {})[name] || ins.icon || list[0].icon || 'faVial';
+    html += `<div class="card" style="left:${x}px;top:${y}px;transform:scale(${backOut(p)});opacity:${clamp(p * 2)}">${icon(ic, '#fff')}<div class="n" style="font-size:${name.length > 11 ? 40 : name.length > 7 ? 52 : 66}px;text-align:center;padding:0 14px">${name}</div></div>`;
   }
-  // flags accumulate across lab inserts
   for (let j = 0; j <= k; j++) {
-    const f = list[j].flag; if (!f) continue;
-    const p = j === k ? (t - f.at) / 0.25 : 1;
-    if (p <= 0) continue;
-    const [x, y] = LAB_POS[f.card];
-    html += `<div class="stamp" style="left:${x + 30}px;top:${y + 200}px;transform:rotate(-7deg) scale(${1.6 - 0.6 * easeOut(p)});opacity:${clamp(p * 1.5)}">${f.text}</div>`;
+    for (const f of [].concat(list[j].flag || [])) {
+      const p = j === k ? (t - f.at) / 0.25 : 1;
+      if (p <= 0 || !order.includes(f.card)) continue;
+      const [x, y] = pos(f.card);
+      html += `<div class="stamp" style="left:${x + 30}px;top:${y + 200}px;transform:rotate(-7deg) scale(${1.6 - 0.6 * easeOut(p)});opacity:${clamp(p * 1.5)}">${f.text}</div>`;
+    }
   }
-  $('#lab-cards').innerHTML = html;
+  return [html, ''];
 }
 
-// ---------- hormones ----------
-function renderHormones(t, ins) {
-  const m = ins.marks, lt = t - ins.s;
-  const pin = easeOut(lt / 0.4);
-  const est = 220 + 300 * easeOut((t - m.est) / 0.6), prog = 380 - 240 * easeOut((t - m.prog) / 0.6), B = 1060;
-  const ex = 340, px = 740;
-  let h = `<div class="bar" style="left:${ex - 115}px;top:${B - est * pin}px;height:${est * pin}px;background:linear-gradient(#ffe95c,#e0b400);box-shadow:0 0 30px rgba(242,229,0,.5)"></div>
-    <div class="bar" style="left:${px - 115}px;top:${B - prog * pin}px;height:${prog * pin}px;background:linear-gradient(#6fb6ff,#1e4ae0);box-shadow:0 0 30px rgba(30,74,224,.6)"></div>
-    <div class="blabel" style="left:${ex}px">ESTROGEN</div><div class="blabel" style="left:${px}px">PROGESTERONE</div>`;
-  if (t > m.est) h += `<div class="arrow" style="left:${ex}px;top:${B - est - 140}px;color:#F2E500;opacity:${clamp((t - m.est) / 0.2)}">▲</div>`;
-  if (t > m.prog) h += `<div class="arrow" style="left:${px}px;top:${B - prog - 140}px;color:#ff4d55;opacity:${clamp((t - m.prog) / 0.2)}">▼</div>`;
-  $('#hor').innerHTML = h;
+function rBars(t, ins, lt) {
+  const bars = ins.bars, n = bars.length, B = 1060, pin = easeOut(lt / 0.4);
+  const xs = n === 3 ? [250, 540, 830] : [340, 740];
+  let html = '';
+  bars.forEach((b, i) => {
+    const m = b.mark ?? ins.s, v = (b.from + (b.to - b.from) * easeOut((t - m) / 0.6)) * 520 * pin, c = COLORS[b.color || 'yellow'], x = xs[i];
+    html += `<div class="bar" style="left:${x - 115}px;top:${B - v}px;height:${v}px;background:linear-gradient(${c[0]},${c[1]});box-shadow:0 0 30px ${c[2]}"></div>
+      <div class="blabel" style="left:${x}px">${b.label}</div>`;
+    if (b.to !== b.from && t > m) html += `<div class="arrow" style="left:${x}px;top:${B - v - 140}px;color:${b.to > b.from ? '#F2E500' : '#ff4d55'};opacity:${clamp((t - m) / 0.2)}">${b.to > b.from ? '▲' : '▼'}</div>`;
+  });
+  return [html, ''];
 }
 
-// ---------- stress ----------
-function renderStress(t, ins) {
-  const m = ins.marks, lt = t - ins.s;
-  const p1 = backOut(lt / 0.35), p2 = (t - m.affects) / 0.5, p3 = (t - m.less) / 0.8;
-  let h = `<div class="node big" style="left:270px;top:720px;background:#ff3b44;transform:scale(${p1})">${svg('faBolt').replace('<svg', '<svg style="fill:#fff"')}</div>
-    <div class="lbl" style="left:270px;top:850px">STRESS</div>`;
+function rFlow(t, ins, lt) {
+  const L = ins.left, R = ins.right, link = ins.link ?? ins.s + 0.4;
+  const p1 = backOut(lt / 0.35), p2 = (t - link) / 0.5;
+  const lc = COLORS[L.color || 'red'][1];
+  let html = `<div class="node big" style="left:270px;top:720px;background:${lc};transform:scale(${p1})">${icon(L.icon, '#fff')}</div><div class="lbl" style="left:270px;top:850px">${L.label}</div>`, lines = '';
   if (p2 > 0) {
-    h += `<svg class="lines"><line x1="390" y1="720" x2="${390 + 300 * easeOut(p2)}" y2="720" stroke="#fff" stroke-width="8" style="filter:drop-shadow(0 0 8px #fff)"/></svg>`;
-    h += `<div class="node big" style="left:810px;top:720px;transform:scale(${backOut((p2 - 0.4) / 0.6)})">${svg('faHeartPulse')}</div>
-      <div class="lbl" style="left:810px;top:850px">THYROID</div>`;
+    lines = `<line x1="390" y1="720" x2="${390 + 300 * easeOut(p2)}" y2="720" stroke="#fff" stroke-width="8" style="filter:drop-shadow(0 0 8px #fff)"/>`;
+    html += `<div class="node big" style="left:810px;top:720px;transform:scale(${backOut((p2 - 0.4) / 0.6)})">${icon(R.icon)}</div><div class="lbl" style="left:810px;top:850px">${R.label}</div>`;
   }
-  if (p3 > 0) {
-    const lvl = 100 - 62 * easeOut(p3);
-    h += `<div style="position:absolute;left:330px;top:960px;width:420px;height:46px;border:4px solid #fff;border-radius:23px;box-shadow:0 0 14px rgba(255,255,255,.6)">
-      <div style="height:100%;width:${lvl}%;background:${lvl > 60 ? '#F2E500' : '#ff4d55'};border-radius:20px"></div></div>
-      <div class="lbl" style="left:540px;top:1030px">THYROID OUTPUT ▼</div>`;
+  const mt = ins.meter;
+  if (mt && t > mt.mark) {
+    const p3 = (t - mt.mark) / 0.8, lvl = mt.up ? 38 + 62 * easeOut(p3) : 100 - 62 * easeOut(p3);
+    html += `<div style="position:absolute;left:330px;top:960px;width:420px;height:46px;border:4px solid #fff;border-radius:23px;box-shadow:0 0 14px rgba(255,255,255,.6)">
+      <div style="height:100%;width:${lvl}%;background:${mt.up ? '#ff4d55' : lvl > 60 ? '#F2E500' : '#ff4d55'};border-radius:20px"></div></div>
+      <div class="lbl" style="left:540px;top:1030px">${mt.label}</div>`;
   }
-  $('#str').innerHTML = h;
+  return [html, lines];
 }
 
-const PANELS = { symptoms: ['#ins-sym', renderSymptoms], labs: ['#ins-lab', renderLabs], hormones: ['#ins-hor', renderHormones], stress: ['#ins-str', renderStress] };
+function fmtNum(v, p) { const x = Math.round(v * clamp(p)); return x.toLocaleString('en-US'); }
+function rStat(t, ins, lt) {
+  const items = ins.items, n = items.length;
+  let html = '';
+  items.forEach((it, i) => {
+    const m = it.mark ?? ins.s + 0.1 + i * 0.5, p = (t - m) / 0.8;
+    if (p <= 0) return;
+    const y = n === 1 ? 560 : 430 + i * 360, c = COLORS[it.color || 'yellow'];
+    const val = typeof it.value === 'number' ? (it.prefix || '') + fmtNum(it.value, easeOut(p)) + (it.suffix || '') : it.value;
+    html += `<div style="position:absolute;left:0;right:0;top:${y}px;text-align:center;transform:scale(${backOut(p / 0.5)});opacity:${clamp(p * 3)}">
+      ${it.icon ? `<div style="display:inline-block;width:96px;height:96px;margin-bottom:6px">${icon(it.icon, c[0])}</div><br>` : ''}
+      <div style="font-weight:900;font-size:${String(val).length > 7 ? 150 : 190}px;line-height:1;color:${c[0]};text-shadow:0 0 30px ${c[2]},0 8px 0 rgba(0,0,0,.4)">${val}</div>
+      <div class="lbl" style="position:relative;left:50%;top:14px;font-size:38px">${typed(it.text, (p - 0.3) / 0.6)}</div></div>`;
+    if (n === 2 && i === 0 && ins.vs) html += `<div class="lbl" style="left:540px;top:${y + 290}px;font-size:40px;opacity:.7">VS</div>`;
+  });
+  return [html, ''];
+}
+
+const RENDER = { nodes: rNodes, cards: rCards, bars: rBars, flow: rFlow, stat: rStat };
 
 function renderAt(t) {
   renderCaptions(t);
@@ -203,13 +216,17 @@ function renderAt(t) {
     $('#logo .on-light').style.display = active ? 'none' : 'block';
     $('#logo .on-dark').style.display = active ? 'block' : 'none';
   }
-  for (const [type, [sel]] of Object.entries(PANELS)) $(sel).style.display = active && active.type === type ? 'block' : 'none';
+  const el = $('#ins');
+  el.style.display = active ? 'block' : 'none';
   if (active) {
-    const [sel, fn] = PANELS[active.type];
-    const el = $(sel), lt = t - active.s;
+    const lt = t - active.s;
     el.style.transform = `scale(${1.06 - 0.06 * easeOut(lt / 0.3)})`;
-    el.querySelectorAll('.floor').forEach((f) => f.style.backgroundPosition = `0 ${(t * 60) % 120}px`);
-    fn(t, active);
+    el.querySelector('.floor').style.backgroundPosition = `0 ${(t * 60) % 120}px`;
+    const title = active.title ?? groupOf(active)[0].title ?? '';
+    $('#ins-title').textContent = title;
+    $('#ins-title').style.top = (active.type === 'nodes' ? 262 : 300) + 'px';
+    const [html, lines] = RENDER[active.type](t, active, lt);
+    $('#ins-body').innerHTML = html; $('#ins-lines').innerHTML = lines;
   }
   // flash on every insert boundary
   let fl = 0;

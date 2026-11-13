@@ -165,9 +165,13 @@ def main():
     for ins in E.get("inserts", []):
         s = wt(ins["words"][0], "s") - 0.12; e = wt(ins["words"][1], "e") + 0.18
         if e - s < 1.4: e = s + 1.4
-        d = dict(ins); d["s"], d["e"] = round(s, 3), round(e, 3)
-        if "flag" in ins: d["flag"] = dict(ins["flag"], at=wt(ins["flag"]["at"], "s"))
-        if "marks" in ins: d["marks"] = {k: wt(v, "s") for k, v in ins["marks"].items()}
+        def resolve(o):  # word indices under "at"/"mark"/"link" -> edited time
+            if isinstance(o, dict):
+                return {k: (wt(v, "s") if k in ("at", "mark", "link") and isinstance(v, int) else resolve(v)) for k, v in o.items()}
+            if isinstance(o, list):
+                return [resolve(x) for x in o]
+            return o
+        d = resolve({k: v for k, v in ins.items() if k != "words"}); d["s"], d["e"] = round(s, 3), round(e, 3)
         inserts.append(d)
     for k, d in enumerate(inserts):            # avoid overlaps
         if k + 1 < len(inserts) and d["e"] > inserts[k + 1]["s"] - 0.05:
@@ -177,7 +181,11 @@ def main():
         if d["s"] - prev_e > 0.3:
             sfx.append({"f": "whoosh/fs830856.ogg", "t": max(d["s"] - 0.12, 0), "g": -6})
         sfx.append({"f": "pop/fs527522.ogg", "t": d["s"] + 0.25, "g": -9})
-        if d.get("flag"): sfx.append({"f": "pop/fs202230.ogg", "t": d["flag"]["at"], "g": -8})
+        flags = d.get("flag") or []
+        for f in [flags] if isinstance(flags, dict) else flags:
+            sfx.append({"f": "pop/fs202230.ogg", "t": f["at"], "g": -8})
+        for it in d.get("items", []) + d.get("bars", []):
+            if isinstance(it.get("mark"), (int, float)): sfx.append({"f": "pop/fs323738.ogg", "t": it["mark"], "g": -10})
         prev_e = d["e"]
     sfx.insert(0, {"f": "impact/fs524817.ogg", "t": 0.02, "g": -10})
     cta = None

@@ -86,7 +86,9 @@
   ],
   "inserts": [
     {
-      "type": "symptoms",
+      "type": "nodes",
+      "group": "sym",
+      "title": "LOW THYROID SIGNS",
       "words": [
         49,
         56
@@ -97,7 +99,9 @@
       }
     },
     {
-      "type": "symptoms",
+      "type": "nodes",
+      "group": "sym",
+      "title": "LOW THYROID SIGNS",
       "words": [
         63,
         69
@@ -108,7 +112,9 @@
       }
     },
     {
-      "type": "symptoms",
+      "type": "nodes",
+      "group": "sym",
+      "title": "LOW THYROID SIGNS",
       "words": [
         70,
         75
@@ -119,7 +125,9 @@
       }
     },
     {
-      "type": "symptoms",
+      "type": "nodes",
+      "group": "sym",
+      "title": "LOW THYROID SIGNS",
       "words": [
         85,
         96
@@ -130,7 +138,9 @@
       }
     },
     {
-      "type": "symptoms",
+      "type": "nodes",
+      "group": "sym",
+      "title": "LOW THYROID SIGNS",
       "words": [
         99,
         105
@@ -141,7 +151,9 @@
       }
     },
     {
-      "type": "symptoms",
+      "type": "nodes",
+      "group": "sym",
+      "title": "LOW THYROID SIGNS",
       "words": [
         117,
         124
@@ -152,7 +164,9 @@
       }
     },
     {
-      "type": "labs",
+      "type": "cards",
+      "group": "labs",
+      "title": "THE THYROID PANEL",
       "words": [
         140,
         149
@@ -160,6 +174,7 @@
       "show": [
         "TSH"
       ],
+      "icon": "faVial",
       "flag": {
         "card": "TSH",
         "at": 147,
@@ -167,7 +182,9 @@
       }
     },
     {
-      "type": "labs",
+      "type": "cards",
+      "group": "labs",
+      "title": "THE THYROID PANEL",
       "words": [
         153,
         155
@@ -176,10 +193,13 @@
         "TSH",
         "FREE T3",
         "FREE T4"
-      ]
+      ],
+      "icon": "faVial"
     },
     {
-      "type": "labs",
+      "type": "cards",
+      "group": "labs",
+      "title": "THE THYROID PANEL",
       "words": [
         176,
         181
@@ -190,6 +210,7 @@
         "FREE T4",
         "REVERSE T3"
       ],
+      "icon": "faVial",
       "flag": {
         "card": "REVERSE T3",
         "at": 180,
@@ -197,26 +218,49 @@
       }
     },
     {
-      "type": "hormones",
+      "type": "bars",
+      "title": "PERIMENOPAUSE",
       "words": [
         229,
         244
       ],
-      "marks": {
-        "est": 233,
-        "prog": 239,
-        "help": 242
-      }
+      "bars": [
+        {
+          "label": "ESTROGEN",
+          "from": 0.42,
+          "to": 1.0,
+          "color": "yellow",
+          "mark": 233
+        },
+        {
+          "label": "PROGESTERONE",
+          "from": 0.73,
+          "to": 0.27,
+          "color": "blue",
+          "mark": 239
+        }
+      ]
     },
     {
-      "type": "stress",
+      "type": "flow",
+      "title": "STRESS vs THYROID",
       "words": [
         258,
         266
       ],
-      "marks": {
-        "affects": 258,
-        "less": 266
+      "left": {
+        "icon": "faBolt",
+        "label": "STRESS",
+        "color": "red"
+      },
+      "right": {
+        "icon": "faHeartPulse",
+        "label": "THYROID"
+      },
+      "link": 258,
+      "meter": {
+        "label": "THYROID OUTPUT \u25bc",
+        "mark": 266
       }
     }
   ],
