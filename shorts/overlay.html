@@ -15,10 +15,10 @@ html, body { margin: 0; background: transparent; }
 /* ---------- captions ---------- */
 #cap { position: absolute; left: 60px; right: 60px; top: 1306px; transform: translateY(-50%);
   display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; column-gap: 22px; row-gap: 0; z-index: 30; }
-.w { display: inline-block; font-weight: 800; font-size: 84px; line-height: 1.08; color: var(--yellow); letter-spacing: 0.5px;
+.w { display: inline-block; font-weight: 800; font-size: calc(84px * var(--k, 1)); line-height: 1.08; color: var(--yellow); letter-spacing: 0.5px;
   text-shadow: 0 0 2px #111, 3px 3px 0 #111, -3px 3px 0 #111, 3px -3px 0 #111, -3px -3px 0 #111, 0 4px 0 #111, 0 -4px 0 #111, 4px 0 0 #111, -4px 0 0 #111, 0 10px 18px rgba(0,0,0,.65);
   transform-origin: 50% 70%; }
-.w.key { font-size: 116px; font-weight: 900; }
+.w.key { font-size: calc(116px * var(--k, 1)); font-weight: 900; }
 .w.hl { color: #fff; background: var(--red); padding: 0 18px; border-radius: 10px; text-shadow: 0 4px 0 rgba(0,0,0,.35); box-shadow: 0 10px 24px rgba(0,0,0,.45); }
 /* ---------- logo ---------- */
 #logo { left: 66px; top: 64px; font-weight: 900; font-size: 54px; color: var(--blue); letter-spacing: 1px; z-index: 40;
@@ -95,6 +95,13 @@ function renderCaptions(t) {
   if (capKey !== c.s) {
     cap.innerHTML = c.words.map((w, i) => `<span class="w${w.key ? ' key' : ''}${w.hl ? ' hl' : ''}" data-i="${i}">${w.t}</span>`).join('');
     capKey = c.s;
+    // normal captions: max two lines -> shrink until they fit (hook cards may use more)
+    if (!c.hook) {
+      let k = 1;
+      const lines = () => { const bs = [...cap.querySelectorAll('.w')].map((e) => e.offsetTop + e.offsetHeight).sort((a, b) => a - b); let n = bs.length ? 1 : 0; for (let i = 1; i < bs.length; i++) if (bs[i] - bs[i - 1] > 45) n++; return n; };
+      cap.style.setProperty('--k', k);
+      while (lines() > 2 && k > 0.55) { k -= 0.05; cap.style.setProperty('--k', k); }
+    } else cap.style.setProperty('--k', 1);
   }
   cap.querySelectorAll('.w').forEach((el, i) => {
     const w = c.words[i], p = (t - w.s) / 0.14;
