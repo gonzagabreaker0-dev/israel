@@ -237,7 +237,7 @@ def main():
             x = int(min(max(ax * W - cw * ax, 0), W - cw))
             y = int(min(max(ay * H - ch * ay, 0), H - ch))
             vf = f"crop={cw}:{ch}:{x}:{y},scale={W}:{H}:flags=lanczos,setsar=1"
-        seg = os.path.join(segdir, f"s{k:03d}.mp4")
+        seg = os.path.abspath(os.path.join(segdir, f"s{k:03d}.mp4"))
         sh(["ffmpeg", "-y", "-v", "error", "-ss", f"{s0:.4f}", "-i", norm, "-frames:v", str(nf), "-vf", vf, "-an",
             "-c:v", "libx264", "-crf", "15", "-preset", "fast", "-r", str(FPS), "-pix_fmt", "yuv420p", seg])
         lst.append(f"file '{seg}'")
