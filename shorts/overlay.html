@@ -23,6 +23,9 @@ html, body { margin: 0; background: transparent; }
 /* ---------- logo ---------- */
 #logo { left: 66px; top: 64px; font-weight: 900; font-size: 54px; color: var(--blue); letter-spacing: 1px; z-index: 40;
   text-shadow: 0 0 1px #fff, 2px 2px 0 #fff, -2px 2px 0 #fff, 2px -2px 0 #fff, -2px -2px 0 #fff, 0 6px 14px rgba(0,0,0,.45); }
+#logo.logo-img { left: 44px; top: 50px; padding: 12px 22px 10px 14px; background: rgba(255,255,255,.9); border-radius: 22px;
+  box-shadow: 0 8px 26px rgba(0,0,0,.35); text-shadow: none; }
+#logo.logo-img img { display: block; width: 360px; height: auto; }
 /* ---------- inserts ---------- */
 .ins { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 38%, #15181f 0%, #07090d 60%, #030405 100%); display: none; z-index: 10; overflow: hidden; }
 .grid-wall { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.07) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.07) 2px, transparent 2px); background-size: 90px 90px; }
@@ -63,7 +66,7 @@ svg.lines { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; 
 <div id="stage">
   <div id="logo" class="abs"></div>
   <div id="ins-sym" class="ins"><div class="grid-wall"></div><div class="floor-wrap"><div class="floor"></div></div>
-    <div class="title" style="top:195px">LOW THYROID SIGNS</div><svg class="lines" id="sym-lines"></svg><div id="sym-nodes"></div></div>
+    <div class="title" style="top:262px">LOW THYROID SIGNS</div><svg class="lines" id="sym-lines"></svg><div id="sym-nodes"></div></div>
   <div id="ins-lab" class="ins"><div class="grid-wall"></div><div class="floor-wrap"><div class="floor"></div></div>
     <div class="title" style="top:300px">THE THYROID PANEL</div><div id="lab-cards"></div></div>
   <div id="ins-hor" class="ins"><div class="grid-wall"></div><div class="floor-wrap"><div class="floor"></div></div>
@@ -213,7 +216,11 @@ window.OVL = {
   ready: false,
   async init(tl, icons) {
     TL = tl; ICON = icons;
-    $('#logo').textContent = tl.logo_text || '';
+    if (tl.logo) {
+      const lg = $('#logo'); lg.className = 'abs logo-img';
+      lg.innerHTML = `<img src="file://${tl.logo}">`;
+      await new Promise((r) => { const im = lg.querySelector('img'); im.complete ? r() : (im.onload = r, im.onerror = r); });
+    } else $('#logo').textContent = tl.logo_text || '';
     if (tl.cta) { $('#cta .ic').innerHTML = svg('faPhone'); $('#cta .t1').textContent = tl.cta.text; $('#cta .t2').textContent = (tl.cta.sub || '') + ' ↓'; }
     await document.fonts.load('900 50px P'); await document.fonts.load('800 50px P'); await document.fonts.load('800 50px M');
     await document.fonts.ready;
