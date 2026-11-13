@@ -1,0 +1,226 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: P; font-weight: 700; src: url(node_modules/@fontsource/poppins/files/poppins-latin-700-normal.woff2); }
+@font-face { font-family: P; font-weight: 800; src: url(node_modules/@fontsource/poppins/files/poppins-latin-800-normal.woff2); }
+@font-face { font-family: P; font-weight: 900; src: url(node_modules/@fontsource/poppins/files/poppins-latin-900-normal.woff2); }
+@font-face { font-family: M; font-weight: 700; src: url(node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-700-normal.woff2); }
+@font-face { font-family: M; font-weight: 800; src: url(node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-800-normal.woff2); }
+:root { --yellow: #F2E500; --red: #E5232B; --blue: #1E4AE0; --ink: #07090d; }
+html, body { margin: 0; background: transparent; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: P; }
+.abs { position: absolute; }
+/* ---------- captions ---------- */
+#cap { position: absolute; left: 60px; right: 60px; top: 1306px; transform: translateY(-50%);
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; column-gap: 22px; row-gap: 0; z-index: 30; }
+.w { display: inline-block; font-weight: 800; font-size: 84px; line-height: 1.08; color: var(--yellow); letter-spacing: 0.5px;
+  text-shadow: 0 0 2px #111, 3px 3px 0 #111, -3px 3px 0 #111, 3px -3px 0 #111, -3px -3px 0 #111, 0 4px 0 #111, 0 -4px 0 #111, 4px 0 0 #111, -4px 0 0 #111, 0 10px 18px rgba(0,0,0,.65);
+  transform-origin: 50% 70%; }
+.w.key { font-size: 116px; font-weight: 900; }
+.w.hl { color: #fff; background: var(--red); padding: 0 18px; border-radius: 10px; text-shadow: 0 4px 0 rgba(0,0,0,.35); box-shadow: 0 10px 24px rgba(0,0,0,.45); }
+/* ---------- logo ---------- */
+#logo { left: 66px; top: 64px; font-weight: 900; font-size: 54px; color: var(--blue); letter-spacing: 1px; z-index: 40;
+  text-shadow: 0 0 1px #fff, 2px 2px 0 #fff, -2px 2px 0 #fff, 2px -2px 0 #fff, -2px -2px 0 #fff, 0 6px 14px rgba(0,0,0,.45); }
+/* ---------- inserts ---------- */
+.ins { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 38%, #15181f 0%, #07090d 60%, #030405 100%); display: none; z-index: 10; overflow: hidden; }
+.grid-wall { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.07) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.07) 2px, transparent 2px); background-size: 90px 90px; }
+.floor-wrap { position: absolute; left: -50%; right: -50%; bottom: -10%; height: 55%; perspective: 600px; perspective-origin: 50% 0%; }
+.floor { position: absolute; inset: 0; transform: rotateX(68deg); transform-origin: 50% 0%;
+  background-image: linear-gradient(rgba(255,255,255,.55) 3px, transparent 3px), linear-gradient(90deg, rgba(255,255,255,.55) 3px, transparent 3px);
+  background-size: 120px 120px; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 100%); }
+.title { position: absolute; left: 0; right: 0; text-align: center; font-family: M; font-weight: 800; font-size: 50px; color: #fff; letter-spacing: 8px;
+  text-shadow: 0 0 10px rgba(255,255,255,.9), 0 0 28px rgba(255,255,255,.5); }
+.lbl { position: absolute; font-family: M; font-weight: 800; font-size: 34px; color: #fff; letter-spacing: 3px; white-space: nowrap;
+  text-shadow: 0 0 8px rgba(255,255,255,.9), 0 0 22px rgba(255,255,255,.45); transform: translateX(-50%); }
+.node { position: absolute; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%; background: #fff;
+  box-shadow: 0 0 22px rgba(255,255,255,.75), 0 0 60px rgba(255,255,255,.3); display: flex; align-items: center; justify-content: center; }
+.node svg { width: 58%; height: 58%; fill: #0b0d12; }
+.node.big { width: 200px; height: 200px; margin: -100px 0 0 -100px; }
+svg.lines { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+.card { position: absolute; width: 410px; height: 230px; border-radius: 26px; border: 4px solid #fff; background: rgba(255,255,255,.06);
+  box-shadow: 0 0 18px rgba(255,255,255,.55), inset 0 0 30px rgba(255,255,255,.08); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+.card svg { width: 60px; height: 60px; fill: #fff; filter: drop-shadow(0 0 6px rgba(255,255,255,.8)); }
+.card .n { font-weight: 900; font-size: 66px; color: #fff; line-height: 1; }
+.stamp { position: absolute; padding: 10px 22px; background: var(--red); color: #fff; font-weight: 900; font-size: 40px; border-radius: 10px;
+  transform: rotate(-7deg); box-shadow: 0 8px 22px rgba(0,0,0,.6); white-space: nowrap; letter-spacing: 1px; }
+.bar { position: absolute; width: 230px; border-radius: 18px 18px 6px 6px; }
+.blabel { position: absolute; top: 1080px; width: 360px; text-align: center; transform: translateX(-50%); font-family: M; font-weight: 800; font-size: 36px; color: #fff; letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(255,255,255,.8); }
+.arrow { position: absolute; font-weight: 900; font-size: 120px; line-height: 1; transform: translateX(-50%); }
+#flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 50; pointer-events: none; }
+/* ---------- CTA ---------- */
+#cta { position: absolute; left: 50%; top: 1530px; z-index: 35; display: none; align-items: center; gap: 24px; padding: 22px 40px 22px 24px;
+  background: #fff; border-radius: 999px; box-shadow: 0 14px 40px rgba(0,0,0,.5); transform-origin: 50% 50%; white-space: nowrap; }
+#cta .ic { width: 96px; height: 96px; border-radius: 50%; background: var(--red); display: flex; align-items: center; justify-content: center; }
+#cta .ic svg { width: 48px; height: 48px; fill: #fff; }
+#cta .t1 { font-weight: 900; font-size: 58px; color: #111; line-height: 1; }
+#cta .t2 { font-weight: 800; font-size: 32px; color: var(--blue); letter-spacing: 3px; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="logo" class="abs"></div>
+  <div id="ins-sym" class="ins"><div class="grid-wall"></div><div class="floor-wrap"><div class="floor"></div></div>
+    <div class="title" style="top:195px">LOW THYROID SIGNS</div><svg class="lines" id="sym-lines"></svg><div id="sym-nodes"></div></div>
+  <div id="ins-lab" class="ins"><div class="grid-wall"></div><div class="floor-wrap"><div class="floor"></div></div>
+    <div class="title" style="top:300px">THE THYROID PANEL</div><div id="lab-cards"></div></div>
+  <div id="ins-hor" class="ins"><div class="grid-wall"></div><div class="floor-wrap"><div class="floor"></div></div>
+    <div class="title" style="top:300px">PERIMENOPAUSE</div><div id="hor"></div></div>
+  <div id="ins-str" class="ins"><div class="grid-wall"></div><div class="floor-wrap"><div class="floor"></div></div>
+    <div class="title" style="top:300px">STRESS vs THYROID</div><div id="str"></div></div>
+  <div id="cta"><div class="ic"></div><div><div class="t1"></div><div class="t2"></div></div></div>
+  <div id="cap"></div>
+  <div id="flash"></div>
+</div>
+<script>
+const $ = (s) => document.querySelector(s);
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const easeOut = (x) => 1 - Math.pow(1 - clamp(x), 3);
+const backOut = (x) => { x = clamp(x); const c = 1.9; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+let TL, ICON;
+const svg = (name) => { const [w, h, , , d] = ICON[name]; return `<svg viewBox="0 0 ${w} ${h}"><path d="${d}"/></svg>`; };
+const typed = (txt, p) => txt.slice(0, Math.round(txt.length * clamp(p)));
+
+// ---------- captions ----------
+let capKey = null;
+function renderCaptions(t) {
+  const c = TL.cards.find((c) => t >= c.s && t < c.e);
+  const cap = $('#cap');
+  if (!c) { cap.innerHTML = ''; capKey = null; return; }
+  if (capKey !== c.s) {
+    cap.innerHTML = c.words.map((w, i) => `<span class="w${w.key ? ' key' : ''}${w.hl ? ' hl' : ''}" data-i="${i}">${w.t}</span>`).join('');
+    capKey = c.s;
+  }
+  cap.querySelectorAll('.w').forEach((el, i) => {
+    const w = c.words[i], p = (t - w.s) / 0.14;
+    if (p < 0) { el.style.visibility = 'hidden'; return; }
+    el.style.visibility = 'visible';
+    const s = 0.6 + 0.4 * backOut(p);
+    el.style.transform = `scale(${s}) translateY(${(1 - easeOut(p)) * 18}px)${w.hl ? ' rotate(-2deg)' : ''}`;
+    el.style.opacity = clamp(p * 2);
+  });
+}
+
+// ---------- symptoms ----------
+const SYM_C = [540, 760];
+const SYM_POS = [[255, 520], [825, 520], [255, 760], [825, 760], [255, 1000], [825, 1000]];
+function renderSymptoms(t, ins) {
+  const list = TL.inserts.filter((x) => x.type === 'symptoms');
+  const k = list.indexOf(ins), lt = t - ins.s;
+  let lines = '', nodes = `<div class="node big" style="left:${SYM_C[0]}px;top:${SYM_C[1]}px;transform:scale(${0.92 + 0.08 * backOut(lt / 0.35)})">${svg('faUser')}</div>`;
+  for (let j = 0; j <= k && j < SYM_POS.length; j++) {
+    const [x, y] = SYM_POS[j];
+    const fresh = j === k, p = fresh ? (lt - 0.18) / 0.35 : 1;
+    if (p <= 0) continue;
+    const q = clamp(p * 1.6);
+    lines += `<line x1="${SYM_C[0]}" y1="${SYM_C[1]}" x2="${SYM_C[0] + (x - SYM_C[0]) * q}" y2="${SYM_C[1] + (y - SYM_C[1]) * q}" stroke="#fff" stroke-width="5" style="filter:drop-shadow(0 0 6px #fff)"/>`;
+    if (p > 0.3) nodes += `<div class="node" style="left:${x}px;top:${y}px;transform:scale(${backOut((p - 0.3) / 0.7)})${fresh ? '' : ';opacity:.8'}">${svg(list[j].add.icon)}</div>`;
+    const tp = fresh ? (lt - 0.45) / 0.5 : 1;
+    if (tp > 0) nodes += `<div class="lbl" style="left:${x}px;top:${j < 2 ? y - 140 : y + 88}px;font-size:${fresh ? 32 : 27}px;${fresh ? '' : 'opacity:.7'}">${typed(list[j].add.label, tp)}</div>`;
+  }
+  $('#sym-lines').innerHTML = lines; $('#sym-nodes').innerHTML = nodes;
+}
+
+// ---------- labs ----------
+const LAB_POS = { 'TSH': [110, 480], 'FREE T3': [560, 480], 'FREE T4': [110, 770], 'REVERSE T3': [560, 770] };
+function renderLabs(t, ins) {
+  const list = TL.inserts.filter((x) => x.type === 'labs');
+  const k = list.indexOf(ins), prev = k > 0 ? list[k - 1].show : [];
+  const lt = t - ins.s; let html = ''; let n = 0;
+  for (const name of ins.show) {
+    const fresh = !prev.includes(name);
+    const p = fresh ? (lt - 0.15 - 0.22 * n++) / 0.4 : 1;
+    if (p <= 0) continue;
+    const [x, y] = LAB_POS[name];
+    html += `<div class="card" style="left:${x}px;top:${y}px;transform:scale(${backOut(p)});opacity:${clamp(p * 2)}">${svg('faVial')}<div class="n" style="font-size:${name.length > 7 ? 52 : 66}px">${name}</div></div>`;
+  }
+  // flags accumulate across lab inserts
+  for (let j = 0; j <= k; j++) {
+    const f = list[j].flag; if (!f) continue;
+    const p = j === k ? (t - f.at) / 0.25 : 1;
+    if (p <= 0) continue;
+    const [x, y] = LAB_POS[f.card];
+    html += `<div class="stamp" style="left:${x + 30}px;top:${y + 200}px;transform:rotate(-7deg) scale(${1.6 - 0.6 * easeOut(p)});opacity:${clamp(p * 1.5)}">${f.text}</div>`;
+  }
+  $('#lab-cards').innerHTML = html;
+}
+
+// ---------- hormones ----------
+function renderHormones(t, ins) {
+  const m = ins.marks, lt = t - ins.s;
+  const pin = easeOut(lt / 0.4);
+  const est = 220 + 300 * easeOut((t - m.est) / 0.6), prog = 380 - 240 * easeOut((t - m.prog) / 0.6), B = 1060;
+  const ex = 340, px = 740;
+  let h = `<div class="bar" style="left:${ex - 115}px;top:${B - est * pin}px;height:${est * pin}px;background:linear-gradient(#ffe95c,#e0b400);box-shadow:0 0 30px rgba(242,229,0,.5)"></div>
+    <div class="bar" style="left:${px - 115}px;top:${B - prog * pin}px;height:${prog * pin}px;background:linear-gradient(#6fb6ff,#1e4ae0);box-shadow:0 0 30px rgba(30,74,224,.6)"></div>
+    <div class="blabel" style="left:${ex}px">ESTROGEN</div><div class="blabel" style="left:${px}px">PROGESTERONE</div>`;
+  if (t > m.est) h += `<div class="arrow" style="left:${ex}px;top:${B - est - 140}px;color:#F2E500;opacity:${clamp((t - m.est) / 0.2)}">▲</div>`;
+  if (t > m.prog) h += `<div class="arrow" style="left:${px}px;top:${B - prog - 140}px;color:#ff4d55;opacity:${clamp((t - m.prog) / 0.2)}">▼</div>`;
+  $('#hor').innerHTML = h;
+}
+
+// ---------- stress ----------
+function renderStress(t, ins) {
+  const m = ins.marks, lt = t - ins.s;
+  const p1 = backOut(lt / 0.35), p2 = (t - m.affects) / 0.5, p3 = (t - m.less) / 0.8;
+  let h = `<div class="node big" style="left:270px;top:720px;background:#ff3b44;transform:scale(${p1})">${svg('faBolt').replace('<svg', '<svg style="fill:#fff"')}</div>
+    <div class="lbl" style="left:270px;top:850px">STRESS</div>`;
+  if (p2 > 0) {
+    h += `<svg class="lines"><line x1="390" y1="720" x2="${390 + 300 * easeOut(p2)}" y2="720" stroke="#fff" stroke-width="8" style="filter:drop-shadow(0 0 8px #fff)"/></svg>`;
+    h += `<div class="node big" style="left:810px;top:720px;transform:scale(${backOut((p2 - 0.4) / 0.6)})">${svg('faHeartPulse')}</div>
+      <div class="lbl" style="left:810px;top:850px">THYROID</div>`;
+  }
+  if (p3 > 0) {
+    const lvl = 100 - 62 * easeOut(p3);
+    h += `<div style="position:absolute;left:330px;top:960px;width:420px;height:46px;border:4px solid #fff;border-radius:23px;box-shadow:0 0 14px rgba(255,255,255,.6)">
+      <div style="height:100%;width:${lvl}%;background:${lvl > 60 ? '#F2E500' : '#ff4d55'};border-radius:20px"></div></div>
+      <div class="lbl" style="left:540px;top:1030px">THYROID OUTPUT ▼</div>`;
+  }
+  $('#str').innerHTML = h;
+}
+
+const PANELS = { symptoms: ['#ins-sym', renderSymptoms], labs: ['#ins-lab', renderLabs], hormones: ['#ins-hor', renderHormones], stress: ['#ins-str', renderStress] };
+
+function renderAt(t) {
+  renderCaptions(t);
+  // inserts
+  let active = null;
+  for (const ins of TL.inserts) if (t >= ins.s && t < ins.e) active = ins;
+  for (const [type, [sel]] of Object.entries(PANELS)) $(sel).style.display = active && active.type === type ? 'block' : 'none';
+  if (active) {
+    const [sel, fn] = PANELS[active.type];
+    const el = $(sel), lt = t - active.s;
+    el.style.transform = `scale(${1.06 - 0.06 * easeOut(lt / 0.3)})`;
+    el.querySelectorAll('.floor').forEach((f) => f.style.backgroundPosition = `0 ${(t * 60) % 120}px`);
+    fn(t, active);
+  }
+  // flash on every insert boundary
+  let fl = 0;
+  for (const ins of TL.inserts) for (const b of [ins.s, ins.e]) { const d = t - b; if (d >= 0 && d < 0.16) fl = Math.max(fl, 0.8 * (1 - d / 0.16)); }
+  $('#flash').style.opacity = fl;
+  // CTA
+  const c = TL.cta, cta = $('#cta');
+  if (c && t >= c.s) {
+    const p = (t - c.s) / 0.45, pulse = 1 + 0.025 * Math.sin((t - c.s) * 5);
+    cta.style.display = 'flex';
+    cta.style.transform = `translateX(-50%) scale(${backOut(p) * pulse})`;
+  } else cta.style.display = 'none';
+}
+
+window.OVL = {
+  ready: false,
+  async init(tl, icons) {
+    TL = tl; ICON = icons;
+    $('#logo').textContent = tl.logo_text || '';
+    if (tl.cta) { $('#cta .ic').innerHTML = svg('faPhone'); $('#cta .t1').textContent = tl.cta.text; $('#cta .t2').textContent = (tl.cta.sub || '') + ' ↓'; }
+    await document.fonts.load('900 50px P'); await document.fonts.load('800 50px P'); await document.fonts.load('800 50px M');
+    await document.fonts.ready;
+    this.ready = true;
+  },
+  renderAt,
+};
+</script>
+</body>
+</html>

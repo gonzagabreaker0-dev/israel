@@ -1,0 +1,228 @@
+{
+  "title": "Thyroid",
+  "logo_text": "DR. JOHN BAIRD",
+  "music": "../.claude/skills/video-shotcraft/assets/audio/bgm/g-eazy-nba-type.mp3",
+  "music_lufs": -31,
+  "start": 0.7,
+  "end": 103.75,
+  "cut_silence_min": 0.3,
+  "remove_words": [
+    [
+      25,
+      34
+    ],
+    [
+      58,
+      62
+    ],
+    [
+      245,
+      247
+    ],
+    [
+      255,
+      257
+    ]
+  ],
+  "word_fix": {
+    "3": "BAIRD,",
+    "109": "",
+    "153": "FREE T3",
+    "155": "FREE T4",
+    "219": "YOU'RE",
+    "248": "",
+    "295": "",
+    "296": "",
+    "297": "",
+    "1": "DR.",
+    "195": "",
+    "274": ""
+  },
+  "hook": {
+    "from": 0,
+    "to": 17,
+    "highlight": [
+      16,
+      17
+    ]
+  },
+  "keywords": [
+    "THYROID",
+    "LOW",
+    "WEIGHT",
+    "TIRED",
+    "COLD",
+    "WARM",
+    "CONSTIPATION",
+    "IRRITABLE",
+    "BOWEL",
+    "DRY",
+    "SKIN",
+    "HAIR",
+    "CLUMPS",
+    "DEPRESSION",
+    "TSH",
+    "SENSITIVE",
+    "T3",
+    "T4",
+    "FREE",
+    "PROTEIN",
+    "REVERSE",
+    "STRESSED",
+    "STRESS",
+    "RATIO",
+    "ESTROGEN",
+    "HIGH",
+    "PROGESTERONE",
+    "PERIMENOPAUSAL",
+    "LESS",
+    "LOWER",
+    "TESTED",
+    "CALL",
+    "LINK",
+    "CONSULT",
+    "SLEEP",
+    "BAIRD"
+  ],
+  "inserts": [
+    {
+      "type": "symptoms",
+      "words": [
+        49,
+        56
+      ],
+      "add": {
+        "icon": "faWeightScale",
+        "label": "CAN'T LOSE WEIGHT"
+      }
+    },
+    {
+      "type": "symptoms",
+      "words": [
+        63,
+        69
+      ],
+      "add": {
+        "icon": "faSnowflake",
+        "label": "ALWAYS COLD"
+      }
+    },
+    {
+      "type": "symptoms",
+      "words": [
+        70,
+        75
+      ],
+      "add": {
+        "icon": "faBatteryQuarter",
+        "label": "TIRED ALL THE TIME"
+      }
+    },
+    {
+      "type": "symptoms",
+      "words": [
+        85,
+        96
+      ],
+      "add": {
+        "icon": "faToilet",
+        "label": "CONSTIPATION / IBS"
+      }
+    },
+    {
+      "type": "symptoms",
+      "words": [
+        99,
+        105
+      ],
+      "add": {
+        "icon": "faShower",
+        "label": "DRY SKIN \u00b7 HAIR LOSS"
+      }
+    },
+    {
+      "type": "symptoms",
+      "words": [
+        117,
+        124
+      ],
+      "add": {
+        "icon": "faCloudRain",
+        "label": "LOW MOOD"
+      }
+    },
+    {
+      "type": "labs",
+      "words": [
+        140,
+        149
+      ],
+      "show": [
+        "TSH"
+      ],
+      "flag": {
+        "card": "TSH",
+        "at": 147,
+        "text": "LEAST SENSITIVE"
+      }
+    },
+    {
+      "type": "labs",
+      "words": [
+        153,
+        155
+      ],
+      "show": [
+        "TSH",
+        "FREE T3",
+        "FREE T4"
+      ]
+    },
+    {
+      "type": "labs",
+      "words": [
+        176,
+        181
+      ],
+      "show": [
+        "TSH",
+        "FREE T3",
+        "FREE T4",
+        "REVERSE T3"
+      ],
+      "flag": {
+        "card": "REVERSE T3",
+        "at": 180,
+        "text": "STRESS MARKER"
+      }
+    },
+    {
+      "type": "hormones",
+      "words": [
+        229,
+        244
+      ],
+      "marks": {
+        "est": 233,
+        "prog": 239,
+        "help": 242
+      }
+    },
+    {
+      "type": "stress",
+      "words": [
+        258,
+        266
+      ],
+      "marks": {
+        "affects": 258,
+        "less": 266
+      }
+    }
+  ],
+  "cta": {
+    "from_word": 291,
+    "text": "FREE CONSULT",
+    "sub": "LINK BELOW"
+  }
+}
