@@ -110,8 +110,7 @@
           "prefix": "<",
           "suffix": "%",
           "text": "OF DIABETES CASES REVERSED",
-          "color": "red",
-          "mark": 101
+          "color": "red"
         }
       ]
     },

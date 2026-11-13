@@ -155,8 +155,7 @@
           "value": "3 AM",
           "icon": "faClock",
           "text": "HORMONE IMBALANCE",
-          "color": "yellow",
-          "mark": 81
+          "color": "yellow"
         }
       ]
     },
@@ -172,8 +171,7 @@
           "value": "LOW T",
           "icon": "faMars",
           "text": "LOW TESTOSTERONE",
-          "color": "red",
-          "mark": 102
+          "color": "red"
         }
       ]
     },
@@ -334,8 +332,7 @@
           "value": "LOW T",
           "icon": "faMars",
           "text": "CHECK FREE TESTOSTERONE",
-          "color": "blue",
-          "mark": 390
+          "color": "blue"
         }
       ]
     }
