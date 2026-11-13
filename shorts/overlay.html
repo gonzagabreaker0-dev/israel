@@ -110,7 +110,7 @@ function renderCaptions(t) {
 
 // ---------- generic inserts ----------
 // Inserts sharing a `group` build on each other (items added in earlier ones stay on screen).
-const groupOf = (ins) => TL.inserts.filter((x) => (x.group || x.type) === (ins.group || ins.type));
+const groupOf = (ins) => ins.group ? TL.inserts.filter((x) => x.group === ins.group) : [ins];
 const icon = (n, fill) => svg(n || 'faCircle').replace('<svg', `<svg style="fill:${fill || '#0b0d12'}"`);
 const COLORS = { yellow: ['#ffe95c', '#e0b400', 'rgba(242,229,0,.5)'], blue: ['#6fb6ff', '#1e4ae0', 'rgba(30,74,224,.6)'], red: ['#ff7a80', '#e5232b', 'rgba(229,35,43,.55)'], white: ['#ffffff', '#cfd6e0', 'rgba(255,255,255,.5)'] };
 const NODE_POS = [[255, 520], [825, 520], [255, 760], [825, 760], [255, 1000], [825, 1000]];
