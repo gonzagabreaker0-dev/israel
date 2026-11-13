@@ -147,7 +147,7 @@ def main():
         for w in c:
             clean = w["w"].upper() if re.match(r"(?i)^(dr|mr|mrs|ms)\.$", w["w"]) else re.sub(r"[.,!?;:]+$", "", w["w"]).upper()
             if hook and hook["from"] <= w["i"] <= hook["to"]:
-                clean = re.sub(r"[.,;:]+$", "", w["w"]).upper()
+                clean = w["w"].upper() if re.match(r"(?i)^(dr|mr|mrs|ms)\.$", w["w"]) else re.sub(r"[.,;:]+$", "", w["w"]).upper()
             bare = re.sub(r"[^A-Z0-9']", "", clean.split()[-1]) if clean else ""
             ws.append({"t": clean, "s": w["s"], "key": bare in kw or clean in kw,
                        "hl": bool(hook) and w["i"] in range(hook.get("highlight", [-1, -2])[0], hook.get("highlight", [-1, -2])[1] + 1)})
@@ -194,7 +194,7 @@ def main():
         cta = dict(E["cta"], s=cs, e=total)
         sfx.append({"f": "pop/fs323738.ogg", "t": cs, "g": -7})
 
-    tl = {"w": W, "h": H, "fps": FPS, "duration": round(total, 3), "logo_text": E.get("logo_text"),
+    tl = {"w": W, "h": H, "fps": FPS, "duration": round(total, 3), "caption_y": E.get("caption_y", 0.68), "logo_text": E.get("logo_text"),
           "logo": os.path.abspath(os.path.join(os.path.dirname(a.edit), E["logo"])) if E.get("logo") else None,
           "logo_dark_bg": os.path.abspath(os.path.join(os.path.dirname(a.edit), E["logo_dark_bg"])) if E.get("logo_dark_bg") else None,
           "cards": out_cards, "inserts": inserts, "cta": cta,
@@ -218,8 +218,9 @@ def main():
         v = f"[0:v]trim={s:.3f}:{e:.3f},setpts=PTS-STARTPTS"
         if z != 1.0:
             cw, ch = int(W / z) // 2 * 2, int(H / z) // 2 * 2
-            x = int(min(max(ANCHOR[0] * W - cw * ANCHOR[0], 0), W - cw))
-            y = int(min(max(ANCHOR[1] * H - ch * ANCHOR[1], 0), H - ch))
+            ax, ay = E.get("zoom_anchor", ANCHOR)
+            x = int(min(max(ax * W - cw * ax, 0), W - cw))
+            y = int(min(max(ay * H - ch * ay, 0), H - ch))
             v += f",crop={cw}:{ch}:{x}:{y},scale={W}:{H}:flags=lanczos"
         fc.append(v + f",setsar=1[v{k}]")
         d = e - s

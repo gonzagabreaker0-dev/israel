@@ -245,6 +245,7 @@ window.OVL = {
   ready: false,
   async init(tl, icons) {
     TL = tl; ICON = icons;
+    $('#cap').style.top = Math.round((tl.caption_y || 0.68) * 1920) + 'px';
     if (tl.logo) {
       const lg = $('#logo'); lg.className = 'abs logo-img';
       lg.innerHTML = `<img class="on-light" src="file://${tl.logo}">` + (tl.logo_dark_bg ? `<img class="on-dark" src="file://${tl.logo_dark_bg}">` : '');
