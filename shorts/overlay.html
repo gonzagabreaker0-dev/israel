@@ -23,9 +23,10 @@ html, body { margin: 0; background: transparent; }
 /* ---------- logo ---------- */
 #logo { left: 66px; top: 64px; font-weight: 900; font-size: 54px; color: var(--blue); letter-spacing: 1px; z-index: 40;
   text-shadow: 0 0 1px #fff, 2px 2px 0 #fff, -2px 2px 0 #fff, 2px -2px 0 #fff, -2px -2px 0 #fff, 0 6px 14px rgba(0,0,0,.45); }
-#logo.logo-img { left: 44px; top: 50px; padding: 12px 22px 10px 14px; background: rgba(255,255,255,.9); border-radius: 22px;
-  box-shadow: 0 8px 26px rgba(0,0,0,.35); text-shadow: none; }
-#logo.logo-img img { display: block; width: 360px; height: auto; }
+#logo.logo-img { left: 40px; top: 46px; text-shadow: none; }
+#logo.logo-img img { display: block; width: 380px; height: auto; }
+#logo.logo-img img.on-light { filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px rgba(255,255,255,.9)); }
+#logo.logo-img img.on-dark { display: none; filter: drop-shadow(0 0 8px rgba(255,255,255,.35)); }
 /* ---------- inserts ---------- */
 .ins { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 38%, #15181f 0%, #07090d 60%, #030405 100%); display: none; z-index: 10; overflow: hidden; }
 .grid-wall { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.07) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.07) 2px, transparent 2px); background-size: 90px 90px; }
@@ -198,6 +199,10 @@ function renderAt(t) {
   // inserts
   let active = null;
   for (const ins of TL.inserts) if (t >= ins.s && t < ins.e) active = ins;
+  if (TL.logo_dark_bg) {
+    $('#logo .on-light').style.display = active ? 'none' : 'block';
+    $('#logo .on-dark').style.display = active ? 'block' : 'none';
+  }
   for (const [type, [sel]] of Object.entries(PANELS)) $(sel).style.display = active && active.type === type ? 'block' : 'none';
   if (active) {
     const [sel, fn] = PANELS[active.type];
@@ -225,8 +230,8 @@ window.OVL = {
     TL = tl; ICON = icons;
     if (tl.logo) {
       const lg = $('#logo'); lg.className = 'abs logo-img';
-      lg.innerHTML = `<img src="file://${tl.logo}">`;
-      await new Promise((r) => { const im = lg.querySelector('img'); im.complete ? r() : (im.onload = r, im.onerror = r); });
+      lg.innerHTML = `<img class="on-light" src="file://${tl.logo}">` + (tl.logo_dark_bg ? `<img class="on-dark" src="file://${tl.logo_dark_bg}">` : '');
+      await Promise.all([...lg.querySelectorAll('img')].map((im) => new Promise((r) => { im.complete ? r() : (im.onload = r, im.onerror = r); })));
     } else $('#logo').textContent = tl.logo_text || '';
     if (tl.cta) { $('#cta .ic').innerHTML = svg('faPhone'); $('#cta .t1').textContent = tl.cta.text; $('#cta .t2').textContent = (tl.cta.sub || '') + ' ↓'; }
     await document.fonts.load('900 50px P'); await document.fonts.load('800 50px P'); await document.fonts.load('800 50px M');

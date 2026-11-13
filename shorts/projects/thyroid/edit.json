@@ -225,5 +225,6 @@
     "text": "FREE CONSULT",
     "sub": "LINK BELOW"
   },
-  "logo": "logo.png"
+  "logo": "logo.png",
+  "logo_dark_bg": "logo-white.png"
 }

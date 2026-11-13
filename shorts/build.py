@@ -188,6 +188,7 @@ def main():
 
     tl = {"w": W, "h": H, "fps": FPS, "duration": round(total, 3), "logo_text": E.get("logo_text"),
           "logo": os.path.abspath(os.path.join(os.path.dirname(a.edit), E["logo"])) if E.get("logo") else None,
+          "logo_dark_bg": os.path.abspath(os.path.join(os.path.dirname(a.edit), E["logo_dark_bg"])) if E.get("logo_dark_bg") else None,
           "cards": out_cards, "inserts": inserts, "cta": cta,
           "zooms": [{"s": o, "z": z} for o, z in zip(offs, zooms)], "sfx": sfx}
     json.dump(tl, open(os.path.join(a.out, "timeline.json"), "w"), indent=1)
