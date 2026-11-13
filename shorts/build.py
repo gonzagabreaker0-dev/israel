@@ -78,6 +78,8 @@ def main():
     for i, j in E.get("remove_words", []):
         cuts.append((words[i]["s"] - 0.03, words[j]["e"] + 0.05))
     keep = subtract([(E.get("start", 0), E["end"])], sorted(cuts))
+    keep = [(round(s_ * FPS) / FPS, round(e_ * FPS) / FPS) for s_, e_ in keep]
+    keep = [(s_, e_) for s_, e_ in keep if e_ - s_ >= 0.15]
 
     offs, t = [], 0.0
     for s, e in keep:
@@ -219,27 +221,39 @@ def main():
             "unsharp=5:5:0.6:5:5:0,eq=contrast=1.06:saturation=1.10:gamma=0.98,vignette=PI/5",
             "-c:v", "libx264", "-crf", "14", "-preset", "fast", "-g", "15",
             "-c:a", "pcm_s16le", "-ar", "48000", "-ac", "1", norm.replace(".mp4", ".mov") if False else norm])
-    fc, vlab, alab = [], [], []
-    for k, ((s, e), z) in enumerate(zip(keep, zooms)):
-        v = f"[0:v]trim={s:.3f}:{e:.3f},setpts=PTS-STARTPTS"
+    # cut one segment at a time (a single filter graph with dozens of trims can exhaust memory)
+    import numpy as np, wave
+    segdir = os.path.join(a.out, "segs"); os.makedirs(segdir, exist_ok=True)
+    pcm = subprocess.run(["ffmpeg", "-v", "error", "-i", norm, "-vn", "-ac", "1", "-ar", "48000", "-f", "s16le", "-"],
+                         capture_output=True, check=True).stdout
+    src = np.frombuffer(pcm, np.int16).astype(np.float32)
+    lst, chunks = [], []
+    for k, ((s0, e0), z) in enumerate(zip(keep, zooms)):
+        nf = round((e0 - s0) * FPS)
+        vf = "setsar=1"
         if z != 1.0:
             cw, ch = int(W / z) // 2 * 2, int(H / z) // 2 * 2
             ax, ay = E.get("zoom_anchor", ANCHOR)
             x = int(min(max(ax * W - cw * ax, 0), W - cw))
             y = int(min(max(ay * H - ch * ay, 0), H - ch))
-            v += f",crop={cw}:{ch}:{x}:{y},scale={W}:{H}:flags=lanczos"
-        fc.append(v + f",setsar=1[v{k}]")
-        d = e - s
-        fc.append(f"[0:a]atrim={s:.3f}:{e:.3f},asetpts=PTS-STARTPTS,afade=t=in:d=0.012,afade=t=out:st={max(d - 0.012, 0):.3f}:d=0.012[a{k}]")
-        vlab.append(f"[v{k}]"); alab.append(f"[a{k}]")
-    n = len(keep)
-    fc.append("".join(vlab) + f"concat=n={n}:v=1:a=0[vout]")
-    fc.append("".join(alab) + f"concat=n={n}:v=0:a=1[aout]")
-    script = os.path.join(a.out, "cut.fc"); open(script, "w").write(";\n".join(fc))
-    sh(["ffmpeg", "-y", "-v", "error", "-i", norm, "-filter_complex_script", script,
-        "-map", "[vout]", "-c:v", "libx264", "-crf", "15", "-preset", "fast", "-r", str(FPS),
-        os.path.join(a.out, "base.mp4"),
-        "-map", "[aout]", "-c:a", "pcm_s16le", os.path.join(a.out, "voice_raw.wav")])
+            vf = f"crop={cw}:{ch}:{x}:{y},scale={W}:{H}:flags=lanczos,setsar=1"
+        seg = os.path.join(segdir, f"s{k:03d}.mp4")
+        sh(["ffmpeg", "-y", "-v", "error", "-ss", f"{s0:.4f}", "-i", norm, "-frames:v", str(nf), "-vf", vf, "-an",
+            "-c:v", "libx264", "-crf", "15", "-preset", "fast", "-r", str(FPS), "-pix_fmt", "yuv420p", seg])
+        lst.append(f"file '{seg}'")
+        i0 = round(s0 * 48000); n = round(nf / FPS * 48000)
+        c = src[i0:i0 + n].copy()
+        if len(c) < n: c = np.pad(c, (0, n - len(c)))
+        f = min(576, n // 2)  # 12 ms fades avoid clicks at each cut
+        c[:f] *= np.linspace(0, 1, f); c[n - f:] *= np.linspace(1, 0, f)
+        chunks.append(c)
+    open(os.path.join(segdir, "list.txt"), "w").write("\n".join(lst))
+    sh(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", os.path.join(segdir, "list.txt"),
+        "-c", "copy", os.path.join(a.out, "base.mp4")])
+    with wave.open(os.path.join(a.out, "voice_raw.wav"), "wb") as wv:
+        wv.setnchannels(1); wv.setsampwidth(2); wv.setframerate(48000)
+        wv.writeframes(np.clip(np.concatenate(chunks), -32768, 32767).astype(np.int16).tobytes())
+    for f_ in os.listdir(segdir): os.remove(os.path.join(segdir, f_))
 
     # ---- 6. audio: clean voice, music bed, sfx ----------------------------------
     voice = os.path.join(a.out, "voice.wav")
