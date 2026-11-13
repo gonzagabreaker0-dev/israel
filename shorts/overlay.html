@@ -142,7 +142,7 @@ function rCards(t, ins, lt) {
     const fresh = !prev.includes(name), p = fresh ? (lt - 0.15 - 0.22 * n++) / 0.4 : 1;
     if (p <= 0) continue;
     const [x, y] = pos(name), ic = (ins.icons || list[0].icons || {})[name] || ins.icon || list[0].icon || 'faVial';
-    html += `<div class="card" style="left:${x}px;top:${y}px;transform:scale(${backOut(p)});opacity:${clamp(p * 2)}">${icon(ic, '#fff')}<div class="n" style="font-size:${name.length > 15 ? 30 : name.length > 11 ? 40 : name.length > 7 ? 52 : 66}px;text-align:center;padding:0 14px">${name}</div></div>`;
+    html += `<div class="card" style="left:${x}px;top:${y}px;transform:scale(${backOut(p)});opacity:${clamp(p * 2)}">${icon(ic, '#fff')}<div class="n" style="font-size:${name.length > 15 ? 30 : name.length > 11 ? 40 : name.length > 9 ? 46 : name.length > 7 ? 52 : 66}px;text-align:center;padding:0 14px">${name}</div></div>`;
   }
   for (let j = 0; j <= k; j++) {
     for (const f of [].concat(list[j].flag || [])) {
