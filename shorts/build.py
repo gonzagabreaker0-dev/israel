@@ -35,8 +35,8 @@ def transcribe(path):
     return [{"w": w.word.strip(), "s": round(w.start, 3), "e": round(w.end, 3)} for s in segs for w in s.words]
 
 
-def silences(path, min_len):
-    out = subprocess.run(["ffmpeg", "-i", path, "-af", "silencedetect=noise=-32dB:d=0.2", "-f", "null", "-"],
+def silences(path, min_len, db=-32):
+    out = subprocess.run(["ffmpeg", "-i", path, "-af", f"silencedetect=noise={db}dB:d=0.2", "-f", "null", "-"],
                          capture_output=True, text=True).stderr
     st = [float(x) for x in re.findall(r"silence_start: ([\d.]+)", out)]
     en = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", out)]
@@ -68,7 +68,13 @@ def main():
 
     # ---- 1. decide what to keep (source time) --------------------------------
     pad = 0.08
-    cuts = [(s + pad, e - pad) for s, e in silences(a.raw, E.get("cut_silence_min", 0.3))]
+    cores = [(w["s"] + 0.25 * (w["e"] - w["s"]), w["e"] - 0.25 * (w["e"] - w["s"])) for w in words if w["e"] - w["s"] < 0.7]
+    cuts = []
+    for s_, e_ in silences(a.raw, E.get("cut_silence_min", 0.3), E.get("silence_db", -32)):
+        cs, ce = s_ + pad, e_ - pad
+        if any(ws < ce and we > cs for ws, we in cores):  # never cut through a spoken word
+            continue
+        cuts.append((cs, ce))
     for i, j in E.get("remove_words", []):
         cuts.append((words[i]["s"] - 0.03, words[j]["e"] + 0.05))
     keep = subtract([(E.get("start", 0), E["end"])], sorted(cuts))

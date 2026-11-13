@@ -1,0 +1,350 @@
+{
+  "title": "Sleep",
+  "logo": "../thyroid/logo.png",
+  "logo_dark_bg": "../thyroid/logo-white.png",
+  "music": "../.claude/skills/video-shotcraft/assets/audio/bgm/g-eazy-nba-type.mp3",
+  "music_lufs": -31,
+  "caption_y": 0.72,
+  "zoom_anchor": [
+    0.5,
+    0.55
+  ],
+  "start": 0.45,
+  "end": 139.0,
+  "cut_silence_min": 0.3,
+  "remove_words": [
+    [
+      152,
+      152
+    ],
+    [
+      367,
+      376
+    ]
+  ],
+  "word_fix": {
+    "0": "",
+    "15": "AN",
+    "81": "3 AM",
+    "82": "",
+    "83": "",
+    "110": "3 AM",
+    "111": "",
+    "112": "",
+    "170": "AN",
+    "220": "PHARMAGABA",
+    "221": "",
+    "224": "L-THEANINE",
+    "225": "",
+    "335": "NON-RESTORATIVE",
+    "336": "",
+    "49": "",
+    "397": ""
+  },
+  "hook": {
+    "from": 0,
+    "to": 18,
+    "highlight": [
+      18,
+      18
+    ]
+  },
+  "keywords": [
+    "SLEEP",
+    "ASLEEP",
+    "RATE",
+    "LIMITING",
+    "STEP",
+    "HEALTH",
+    "FALLING",
+    "STAYING",
+    "BOTH",
+    "3 AM",
+    "HORMONAL",
+    "IMBALANCES",
+    "WOMEN",
+    "MEN",
+    "TESTOSTERONE",
+    "STRESS",
+    "CORTISOL",
+    "AWAKENING",
+    "ANXIETY",
+    "HIGH",
+    "NIGHT",
+    "LOW",
+    "MORNING",
+    "FLIPPED",
+    "B5",
+    "B6",
+    "C",
+    "PHARMAGABA",
+    "GLYCINE",
+    "L-THEANINE",
+    "PROGESTERONE",
+    "PROGESTERONE'S",
+    "ESTROGEN'S",
+    "NORMAL",
+    "CHECKED",
+    "TIRED",
+    "NON-RESTORATIVE",
+    "MITOCHONDRIA",
+    "MOLD",
+    "ORGANIC",
+    "ACID",
+    "TESTING",
+    "DEFICIENCY",
+    "FREE",
+    "CLICK",
+    "BELOW",
+    "BAIRD",
+    "SIX",
+    "SEVEN"
+  ],
+  "inserts": [
+    {
+      "type": "cards",
+      "group": "kind",
+      "title": "WHICH ONE ARE YOU?",
+      "words": [
+        50,
+        57
+      ],
+      "show": [
+        "FALLING ASLEEP"
+      ],
+      "icons": {
+        "FALLING ASLEEP": "faBed",
+        "STAYING ASLEEP": "faMoon",
+        "BOTH": "faFaceTired"
+      }
+    },
+    {
+      "type": "cards",
+      "group": "kind",
+      "words": [
+        58,
+        67
+      ],
+      "show": [
+        "FALLING ASLEEP",
+        "STAYING ASLEEP"
+      ]
+    },
+    {
+      "type": "cards",
+      "group": "kind",
+      "words": [
+        68,
+        75
+      ],
+      "show": [
+        "FALLING ASLEEP",
+        "STAYING ASLEEP",
+        "BOTH"
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "WAKING UP AT",
+      "words": [
+        80,
+        88
+      ],
+      "items": [
+        {
+          "value": "3 AM",
+          "icon": "faClock",
+          "text": "HORMONE IMBALANCE",
+          "color": "yellow",
+          "mark": 81
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "MEN WAKING AT 3 AM?",
+      "words": [
+        98,
+        103
+      ],
+      "items": [
+        {
+          "value": "LOW T",
+          "icon": "faMars",
+          "text": "LOW TESTOSTERONE",
+          "color": "red",
+          "mark": 102
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "FLIPPED CORTISOL",
+      "words": [
+        183,
+        196
+      ],
+      "bars": [
+        {
+          "label": "AT NIGHT",
+          "from": 0.3,
+          "to": 0.95,
+          "color": "red",
+          "mark": 187
+        },
+        {
+          "label": "IN THE MORNING",
+          "from": 0.8,
+          "to": 0.25,
+          "color": "blue",
+          "mark": 191
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "group": "flip",
+      "title": "FIX THE FLIP",
+      "words": [
+        199,
+        210
+      ],
+      "show": [
+        "PHOSPHATIDYLSERINE",
+        "B5 + B6",
+        "VITAMIN C"
+      ],
+      "icon": "faCapsules"
+    },
+    {
+      "type": "cards",
+      "group": "anx",
+      "title": "MY SLEEP STACK",
+      "words": [
+        218,
+        221
+      ],
+      "show": [
+        "PHARMAGABA"
+      ],
+      "icon": "faPills"
+    },
+    {
+      "type": "cards",
+      "group": "anx",
+      "words": [
+        222,
+        222
+      ],
+      "show": [
+        "PHARMAGABA",
+        "GLYCINE"
+      ]
+    },
+    {
+      "type": "cards",
+      "group": "anx",
+      "words": [
+        223,
+        229
+      ],
+      "show": [
+        "PHARMAGABA",
+        "GLYCINE",
+        "L-THEANINE"
+      ],
+      "flag": {
+        "card": "L-THEANINE",
+        "at": 228,
+        "text": "MY FAVORITE"
+      }
+    },
+    {
+      "type": "bars",
+      "title": "PERIMENOPAUSE",
+      "words": [
+        257,
+        265
+      ],
+      "bars": [
+        {
+          "label": "ESTROGEN",
+          "from": 0.6,
+          "to": 0.6,
+          "color": "yellow"
+        },
+        {
+          "label": "PROGESTERONE",
+          "from": 0.6,
+          "to": 0.22,
+          "color": "blue",
+          "mark": 264
+        }
+      ]
+    },
+    {
+      "type": "nodes",
+      "group": "nr",
+      "title": "WAKE UP TIRED?",
+      "center": {
+        "icon": "faBed"
+      },
+      "words": [
+        338,
+        344
+      ],
+      "add": {
+        "icon": "faBatteryEmpty",
+        "label": "MITOCHONDRIA"
+      }
+    },
+    {
+      "type": "nodes",
+      "group": "nr",
+      "words": [
+        345,
+        350
+      ],
+      "add": {
+        "icon": "faBacterium",
+        "label": "MOLD"
+      }
+    },
+    {
+      "type": "nodes",
+      "group": "nr",
+      "words": [
+        358,
+        366
+      ],
+      "add": {
+        "icon": "faVial",
+        "label": "ORGANIC ACID TEST"
+      }
+    },
+    {
+      "type": "stat",
+      "title": "MEN, NOT SLEEPING WELL?",
+      "words": [
+        385,
+        391
+      ],
+      "items": [
+        {
+          "value": "LOW T",
+          "icon": "faMars",
+          "text": "CHECK FREE TESTOSTERONE",
+          "color": "blue",
+          "mark": 390
+        }
+      ]
+    }
+  ],
+  "cta": {
+    "from_word": 408,
+    "text": "LEARN MORE",
+    "sub": "CLICK THE VIDEO BELOW",
+    "icon": "faPlay"
+  },
+  "silence_db": -28
+}

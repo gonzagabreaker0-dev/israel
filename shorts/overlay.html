@@ -95,8 +95,8 @@ function renderCaptions(t) {
       let k = 1;
       const lines = () => { const bs = [...cap.querySelectorAll('.w')].map((e) => e.offsetTop + e.offsetHeight).sort((a, b) => a - b); let n = bs.length ? 1 : 0; for (let i = 1; i < bs.length; i++) if (bs[i] - bs[i - 1] > 45) n++; return n; };
       cap.style.setProperty('--k', k);
-      while (lines() > 2 && k > 0.55) { k -= 0.05; cap.style.setProperty('--k', k); }
-    } else cap.style.setProperty('--k', 1);
+      while ((lines() > 2 || cap.scrollWidth > cap.clientWidth + 2) && k > 0.4) { k -= 0.05; cap.style.setProperty('--k', k); }
+    } else { let k = 1; cap.style.setProperty('--k', k); while (cap.scrollWidth > cap.clientWidth + 2 && k > 0.4) { k -= 0.05; cap.style.setProperty('--k', k); } }
   }
   cap.querySelectorAll('.w').forEach((el, i) => {
     const w = c.words[i], p = (t - w.s) / 0.14;
@@ -142,7 +142,7 @@ function rCards(t, ins, lt) {
     const fresh = !prev.includes(name), p = fresh ? (lt - 0.15 - 0.22 * n++) / 0.4 : 1;
     if (p <= 0) continue;
     const [x, y] = pos(name), ic = (ins.icons || list[0].icons || {})[name] || ins.icon || list[0].icon || 'faVial';
-    html += `<div class="card" style="left:${x}px;top:${y}px;transform:scale(${backOut(p)});opacity:${clamp(p * 2)}">${icon(ic, '#fff')}<div class="n" style="font-size:${name.length > 11 ? 40 : name.length > 7 ? 52 : 66}px;text-align:center;padding:0 14px">${name}</div></div>`;
+    html += `<div class="card" style="left:${x}px;top:${y}px;transform:scale(${backOut(p)});opacity:${clamp(p * 2)}">${icon(ic, '#fff')}<div class="n" style="font-size:${name.length > 15 ? 30 : name.length > 11 ? 40 : name.length > 7 ? 52 : 66}px;text-align:center;padding:0 14px">${name}</div></div>`;
   }
   for (let j = 0; j <= k; j++) {
     for (const f of [].concat(list[j].flag || [])) {
@@ -246,12 +246,13 @@ window.OVL = {
   async init(tl, icons) {
     TL = tl; ICON = icons;
     $('#cap').style.top = Math.round((tl.caption_y || 0.68) * 1920) + 'px';
+    $('#cta').style.top = Math.min(1660, Math.round((tl.caption_y || 0.68) * 1920) + 224) + 'px';
     if (tl.logo) {
       const lg = $('#logo'); lg.className = 'abs logo-img';
       lg.innerHTML = `<img class="on-light" src="file://${tl.logo}">` + (tl.logo_dark_bg ? `<img class="on-dark" src="file://${tl.logo_dark_bg}">` : '');
       await Promise.all([...lg.querySelectorAll('img')].map((im) => new Promise((r) => { im.complete ? r() : (im.onload = r, im.onerror = r); })));
     } else $('#logo').textContent = tl.logo_text || '';
-    if (tl.cta) { $('#cta .ic').innerHTML = svg('faPhone'); $('#cta .t1').textContent = tl.cta.text; $('#cta .t2').textContent = (tl.cta.sub || '') + ' ↓'; }
+    if (tl.cta) { $('#cta .ic').innerHTML = svg(tl.cta.icon || 'faPhone'); $('#cta .t1').textContent = tl.cta.text; $('#cta .t2').textContent = (tl.cta.sub || '') + ' ↓'; }
     await document.fonts.load('900 50px P'); await document.fonts.load('800 50px P'); await document.fonts.load('800 50px M');
     await document.fonts.ready;
     this.ready = true;

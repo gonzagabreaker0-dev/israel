@@ -1,0 +1,313 @@
+{
+  "title": "Reversing diabetes",
+  "logo": "../thyroid/logo.png",
+  "logo_dark_bg": "../thyroid/logo-white.png",
+  "music": "../.claude/skills/video-shotcraft/assets/audio/bgm/g-eazy-nba-type.mp3",
+  "music_lufs": -31,
+  "caption_y": 0.725,
+  "zoom_anchor": [
+    0.5,
+    0.58
+  ],
+  "silence_db": -30,
+  "start": 0.0,
+  "end": 148.0,
+  "cut_silence_min": 0.3,
+  "remove_words": [
+    [
+      67,
+      75
+    ]
+  ],
+  "word_fix": {
+    "101": "1%",
+    "102": "",
+    "156": "90%",
+    "157": "",
+    "251": "GLP-1S",
+    "252": "",
+    "260": "35-YEAR",
+    "261": "",
+    "383": "502-785-7480",
+    "384": "",
+    "385": ""
+  },
+  "hook": {
+    "from": 0,
+    "to": 41,
+    "highlight": [
+      38,
+      39
+    ]
+  },
+  "keywords": [
+    "WEIGHT",
+    "MIDSECTION",
+    "LOSE",
+    "INSULIN",
+    "RESISTANCE",
+    "DIABETES",
+    "DIABETES?",
+    "REVERSE",
+    "DIETS",
+    "DIET",
+    "MAINSTREAM",
+    "1%",
+    "MEDICATIONS",
+    "EDUCATION",
+    "LIFESTYLE",
+    "AMERICAN",
+    "DIABETIC",
+    "ASSOCIATION",
+    "INCREASED",
+    "90%",
+    "EFFECTIVENESS",
+    "SPECIFIC",
+    "EXERCISE",
+    "SLEEP",
+    "STRESS",
+    "SUPPLEMENTS",
+    "KNOWLEDGE",
+    "SEVEN",
+    "MINUTES",
+    "HOUR",
+    "TIME",
+    "GLP-1S",
+    "BEST",
+    "30",
+    "50",
+    "POUNDS",
+    "THREE",
+    "MONTHS",
+    "15",
+    "YEAR",
+    "SECRET",
+    "TRICKS",
+    "TIPS",
+    "RED",
+    "LIGHT",
+    "THERAPY",
+    "SKIN",
+    "ACCELERATING",
+    "FREE",
+    "VISIT",
+    "CLICK",
+    "BELOW",
+    "502-785-7480",
+    "BAIRD"
+  ],
+  "inserts": [
+    {
+      "type": "stat",
+      "title": "MAINSTREAM MEDICINE",
+      "words": [
+        95,
+        104
+      ],
+      "items": [
+        {
+          "value": 1,
+          "prefix": "<",
+          "suffix": "%",
+          "text": "OF DIABETES CASES REVERSED",
+          "color": "red",
+          "mark": 101
+        }
+      ]
+    },
+    {
+      "type": "flow",
+      "title": "THE ADA DIET",
+      "words": [
+        137,
+        144
+      ],
+      "left": {
+        "icon": "faUtensils",
+        "label": "ADA DIET",
+        "color": "red"
+      },
+      "right": {
+        "icon": "faSyringe",
+        "label": "DIABETES"
+      },
+      "link": 138,
+      "meter": {
+        "label": "DIABETES \u25b2",
+        "mark": 140,
+        "up": true
+      }
+    },
+    {
+      "type": "stat",
+      "title": "REVERSAL RATE",
+      "vs": true,
+      "words": [
+        151,
+        158
+      ],
+      "items": [
+        {
+          "value": "<1%",
+          "text": "MAINSTREAM",
+          "color": "red"
+        },
+        {
+          "value": 90,
+          "suffix": "%",
+          "text": "IN MY PRACTICE",
+          "color": "yellow",
+          "mark": 156
+        }
+      ]
+    },
+    {
+      "type": "nodes",
+      "group": "plan",
+      "title": "MY REVERSAL PLAN",
+      "center": {
+        "icon": "faUserDoctor"
+      },
+      "words": [
+        160,
+        165
+      ],
+      "add": {
+        "icon": "faAppleWhole",
+        "label": "SPECIFIC DIET"
+      }
+    },
+    {
+      "type": "nodes",
+      "group": "plan",
+      "words": [
+        172,
+        174
+      ],
+      "add": {
+        "icon": "faPersonRunning",
+        "label": "EXERCISE"
+      }
+    },
+    {
+      "type": "nodes",
+      "group": "plan",
+      "words": [
+        175,
+        177
+      ],
+      "add": {
+        "icon": "faBed",
+        "label": "SLEEP"
+      }
+    },
+    {
+      "type": "nodes",
+      "group": "plan",
+      "words": [
+        178,
+        180
+      ],
+      "add": {
+        "icon": "faBolt",
+        "label": "STRESS"
+      }
+    },
+    {
+      "type": "nodes",
+      "group": "plan",
+      "words": [
+        187,
+        189
+      ],
+      "add": {
+        "icon": "faCapsules",
+        "label": "SUPPLEMENTS"
+      }
+    },
+    {
+      "type": "stat",
+      "title": "TIME WITH YOUR DOCTOR",
+      "vs": true,
+      "words": [
+        225,
+        240
+      ],
+      "items": [
+        {
+          "value": "7 MIN",
+          "text": "AVERAGE APPOINTMENT",
+          "color": "red",
+          "mark": 225
+        },
+        {
+          "value": "30-60 MIN",
+          "text": "IN MY OFFICE",
+          "color": "yellow",
+          "mark": 235
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "GLP-1s",
+      "words": [
+        264,
+        274
+      ],
+      "items": [
+        {
+          "value": "30-50 LBS",
+          "icon": "faWeightScale",
+          "text": "LOST IN 3 MONTHS",
+          "color": "yellow",
+          "mark": 265
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "GLP-1s",
+      "vs": true,
+      "words": [
+        282,
+        287
+      ],
+      "items": [
+        {
+          "value": "30-50 LBS",
+          "text": "IN 3 MONTHS \u00b7 MY PATIENTS",
+          "color": "yellow"
+        },
+        {
+          "value": "15 LBS",
+          "text": "IN 1 YEAR \u00b7 PACKAGE INSERT",
+          "color": "white",
+          "mark": 283
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "IN OUR OFFICE",
+      "words": [
+        332,
+        341
+      ],
+      "items": [
+        {
+          "value": "RED LIGHT",
+          "icon": "faLightbulb",
+          "text": "TIGHTENS SKIN AS YOU LOSE WEIGHT",
+          "color": "red",
+          "mark": 332
+        }
+      ]
+    }
+  ],
+  "cta": {
+    "from_word": 367,
+    "text": "FREE VISIT",
+    "sub": "502-785-7480"
+  }
+}
