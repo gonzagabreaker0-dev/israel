@@ -38,8 +38,12 @@ if (stills) {
   for (const t of stills.split(',').map(Number)) {
     const png = path.join(out, `ov-${t}.png`);
     fs.writeFileSync(png, await shot(page, t));
-    execFileSync('ffmpeg', ['-y', '-v', 'error', '-ss', String(t), '-i', path.join(out, 'base.mp4'), '-i', png,
-      '-filter_complex', '[0:v][1:v]overlay=0:0,scale=540:-1', '-frames:v', '1', '-q:v', '3', path.join(out, `still-${t}.jpg`)]);
+    const inHalf = (tl.half || []).some(([a, b]) => t >= a && t < b);
+    const bt = Math.min(t, (tl.speech_end ?? tl.duration) - 0.05);
+    const fc = inHalf ? `[0:v]split[a][b];[b]crop=${W}:${H - 620}:0:0[s];[a][s]overlay=0:620[c];[c][1:v]overlay=0:0,scale=540:-1`
+                      : '[0:v][1:v]overlay=0:0,scale=540:-1';
+    execFileSync('ffmpeg', ['-y', '-v', 'error', '-ss', String(bt), '-i', path.join(out, 'base.mp4'), '-i', png,
+      '-filter_complex', fc, '-frames:v', '1', '-q:v', '3', path.join(out, `still-${t}.jpg`)]);
     console.log('still', t);
   }
   await browser.close();

@@ -89,7 +89,7 @@ svg.lines { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; 
 #band .s2 { position: absolute; left: 60px; right: 60px; top: 215px; font: 900 128px/1 P; color: var(--yellow); letter-spacing: -2px;
   text-shadow: 5px 5px 0 #000, -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000, 0 14px 30px rgba(0,0,0,.6); }
 /* statements (typed lines on paper) */
-.stmt { position: absolute; left: 90px; right: 90px; font: 900 108px/1.02 P; letter-spacing: -3px; }
+.stmt { position: absolute; left: 80px; right: 60px; font: 900 108px/1.02 P; letter-spacing: 0; white-space: nowrap; }
 .stmt .cur { display: inline-block; width: 8px; height: 0.9em; background: currentColor; margin-left: 6px; vertical-align: -0.08em; }
 /* outro */
 #outro { position: absolute; inset: 0; z-index: 45; display: none; background-size: cover; }
@@ -267,7 +267,7 @@ function rStatement(t, ins, lt) {
   const list = groupOf(ins), k = list.indexOf(ins);
   const lines = []; list.slice(0, k + 1).forEach((x, j) => (x.lines || []).forEach((ln) => lines.push({ ...ln, old: j < k })));
   const ink = ins.ink || list[0].ink || '#1d1915', acc = ins.accent || list[0].accent || '#E5232B';
-  const maxLen = Math.max(...lines.map((l) => l.t.length), 1), fs = Math.min(108, Math.floor(900 / (maxLen * 0.68)));
+  const maxLen = Math.max(...lines.map((l) => l.t.length), 1), fs = Math.min(150, Math.floor(910 / (maxLen * 0.62)));
   const lh = Math.round(fs * 1.22), top = Math.round(940 - (lines.length * lh) / 2);
   let html = '';
   lines.forEach((ln, i) => {
@@ -341,8 +341,10 @@ function renderAt(t) {
   let active = null;
   for (const ins of TL.inserts) if (t >= ins.s && t < ins.e) active = ins;
   if (TL.logo_dark_bg) {
-    $('#logo .on-light').style.display = active ? 'none' : 'block';
-    $('#logo .on-dark').style.display = active ? 'block' : 'none';
+    const g0 = active && (active.ground || groupOf(active)[0].ground || TL.ground);
+    const darkBg = active && !(g0 && /cream/.test(g0)) && active.layout !== 'half' || (active?.layout === 'half' && !(g0 && /cream/.test(g0)));
+    $('#logo .on-light').style.display = darkBg ? 'none' : 'block';
+    $('#logo .on-dark').style.display = darkBg ? 'block' : 'none';
   }
   const el = $('#ins');
   el.style.display = active ? 'block' : 'none';
