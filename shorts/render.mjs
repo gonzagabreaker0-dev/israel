@@ -68,11 +68,21 @@ await Promise.all(Array.from({ length: WORKERS }, async (_, k) => {
 }));
 await browser.close();
 
+// base picture: hold the last frame under the outro, and drop the speaker lower during half-screen panels
+function compose() {
+  const pad = Math.max(0, tl.duration - (tl.speech_end ?? tl.duration));
+  let f = `[0:v]tpad=stop_mode=clone:stop_duration=${pad.toFixed(3)}[b0]`, cur = 'b0';
+  if (tl.half && tl.half.length) {
+    const D = 620, en = tl.half.map(([a, b]) => `between(t,${a.toFixed(3)},${b.toFixed(3)})`).join('+');
+    f += `;[b0]split[bA][bB];[bB]crop=${W}:${H - D}:0:0[bS];[bA][bS]overlay=0:${D}:enable='${en}'[b1]`; cur = 'b1';
+  }
+  return f + `;[${cur}][1:v]overlay=0:0:eof_action=pass,format=yuv420p[v]`;
+}
 const list = path.join(out, 'ov.txt');
 fs.writeFileSync(list, Array.from({ length: WORKERS }, (_, k) => `file 'ov${k}.mov'`).filter((_, k) => k * per < N).join('\n'));
 execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', path.join(out, 'base.mp4'), '-f', 'concat', '-safe', '0', '-i', list,
   '-i', path.join(out, 'audio.wav'),
-  '-filter_complex', '[0:v][1:v]overlay=0:0:eof_action=pass,format=yuv420p[v]', '-map', '[v]', '-map', '2:a',
+  '-filter_complex', compose(), '-map', '[v]', '-map', '2:a',
   '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-profile:v', 'high', '-r', String(FPS),
   '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', '-shortest', path.join(out, 'final.mp4')], { stdio: 'inherit' });
 console.log('done', path.join(out, 'final.mp4'), `${((Date.now() - t0) / 1000).toFixed(0)}s`);

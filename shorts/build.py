@@ -202,7 +202,40 @@ def main():
         cta = dict(E["cta"], s=cs, e=total)
         sfx.append({"f": "pop/fs323738.ogg", "t": cs, "g": -7})
 
-    tl = {"w": W, "h": H, "fps": FPS, "duration": round(total, 3), "caption_y": E.get("caption_y", 0.68), "logo_text": E.get("logo_text"),
+    # stickers (paper cut-outs beside the speaker, landing on a word)
+    stickers = []
+    for st_ in E.get("stickers", []):
+        s1 = wt(st_["word"], "s") - 0.05
+        stickers.append(dict(st_, s=round(s1, 3), e=round(min(s1 + st_.get("dur", 1.6), total), 3)))
+        sfx.append({"f": "pop/fs527522.ogg", "t": max(s1, 0), "g": -8})
+    band = None
+    if E.get("band"):
+        b_ = E["band"]; band = dict(b_, s=wt(b_["from_word"], "s"), e=wt(b_["to_word"], "e") + 0.35)
+        sfx.append({"f": "whoosh/fs830856.ogg", "t": max(band["s"] - 0.05, 0), "g": -7})
+    for d in inserts:
+        for ln in d.get("lines", []):
+            if isinstance(ln.get("mark"), (int, float)): sfx.append({"f": "click/fs788933.ogg", "t": ln["mark"], "g": -12})
+    outro = None; total_out = total
+    if E.get("outro"):
+        outro = dict(E["outro"], s=round(total, 3)); total_out = total + E["outro"].get("len", 2.6)
+        sfx.append({"f": "whoosh/fs830856.ogg", "t": max(total - 0.15, 0), "g": -6})
+    leaks = []
+    if E.get("transition") == "leak":
+        key = lambda d: (d.get("group") or id(d), d.get("layout"))
+        pts = set()
+        for j, d in enumerate(inserts):  # leak only where the scene really changes, not between steps of one graphic
+            pv = inserts[j - 1] if j else None; nx = inserts[j + 1] if j + 1 < len(inserts) else None
+            if not (pv and d["s"] - pv["e"] < 0.6 and key(pv) == key(d)): pts.add(round(d["s"], 2))
+            if not (nx and nx["s"] - d["e"] < 0.6 and key(nx) == key(d)): pts.add(round(d["e"], 2))
+        if outro: pts.add(round(total, 2))
+        pts = sorted(pts)
+        for x in pts:
+            if not leaks or x - leaks[-1] > 0.4: leaks.append(x)
+    if cta: cta["e"] = total_out
+    tl = {"w": W, "h": H, "fps": FPS, "duration": round(total_out, 3), "caption_y": E.get("caption_y", 0.68), "logo_text": E.get("logo_text"),
+          "caption_mode": E.get("caption_mode"), "transition": E.get("transition"), "ground": E.get("ground"),
+          "stickers": stickers, "band": band, "outro": outro, "leaks": leaks,
+          "half": [[d["s"], d["e"]] for d in inserts if d.get("layout") == "half"], "speech_end": round(total, 3),
           "logo": os.path.abspath(os.path.join(os.path.dirname(a.edit), E["logo"])) if E.get("logo") else None,
           "logo_dark_bg": os.path.abspath(os.path.join(os.path.dirname(a.edit), E["logo_dark_bg"])) if E.get("logo_dark_bg") else None,
           "cards": out_cards, "inserts": inserts, "cta": cta,
@@ -218,7 +251,7 @@ def main():
     if not os.path.exists(norm):
         sh(["ffmpeg", "-y", "-v", "error", "-i", a.raw, "-vf",
             f"scale={W}:{H}:force_original_aspect_ratio=increase:flags=lanczos,crop={W}:{H},fps={FPS},"
-            "unsharp=5:5:0.6:5:5:0,eq=contrast=1.06:saturation=1.10:gamma=0.98,vignette=PI/5",
+            "unsharp=5:5:0.6:5:5:0," + E.get("grade", "eq=contrast=1.06:saturation=1.10:gamma=0.98,vignette=PI/5"),
             "-c:v", "libx264", "-crf", "14", "-preset", "fast", "-g", "15",
             "-c:a", "pcm_s16le", "-ar", "48000", "-ac", "1", norm.replace(".mp4", ".mov") if False else norm])
     # cut one segment at a time (a single filter graph with dozens of trims can exhaust memory)
@@ -260,12 +293,20 @@ def main():
     sh(["ffmpeg", "-y", "-v", "error", "-i", os.path.join(a.out, "voice_raw.wav"), "-af",
         "highpass=f=80,afftdn=nf=-28,acompressor=threshold=-20dB:ratio=3:attack=5:release=90:makeup=2,"
         "loudnorm=I=-14:TP=-1.5:LRA=7", "-ar", "48000", "-ac", "2", voice])
-    ins_ = ["-i", voice]; parts = ["[0:a]asplit=2[vo][vosc]" if E.get("music") else "[0:a]volume=1[vo]"]; mix = ["[vo]"]; k = 1
-    if E.get("music"):
+    ins_ = ["-i", voice]; parts = ["[0:a]apad,asplit=2[vo][vosc]" if E.get("music") else "[0:a]apad[vo]"]; mix = ["[vo]"]; k = 1
+    if E.get("music") == "ambient":  # soft synthesized pad (rights-free), two chords breathing into each other
+        mpath = os.path.join(a.out, "ambient.wav")
+        A = "+".join(f"{g}*sin(2*PI*{f}*t)" for f, g in [(220, .10), (277.18, .08), (329.63, .07), (415.30, .045), (110, .05)])
+        B = "+".join(f"{g}*sin(2*PI*{f}*t)" for f, g in [(196, .10), (246.94, .08), (293.66, .07), (369.99, .045), (98, .05)])
+        expr = f"(({A})*(0.5+0.5*cos(2*PI*t/16))+({B})*(0.5-0.5*cos(2*PI*t/16)))*(0.85+0.15*sin(2*PI*0.25*t))"
+        sh(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", f"aevalsrc='{expr}':s=48000:d={total_out + 1:.2f}",
+            "-af", "lowpass=f=1800,aecho=0.8:0.6:180|370:0.35|0.25,afade=t=in:d=2", "-ac", "2", mpath])
+    elif E.get("music"):
         mpath = os.path.normpath(os.path.join(ROOT, "shorts", E["music"]))
+    if E.get("music"):
         ins_ += ["-stream_loop", "-1", "-i", mpath]
-        parts.append(f"[{k}:a]atrim=0:{total:.3f},loudnorm=I={E.get('music_lufs', -30)}:TP=-6,"
-                     f"afade=t=in:d=0.6,afade=t=out:st={total - 1.5:.3f}:d=1.5,aresample=48000[mu]")
+        parts.append(f"[{k}:a]atrim=0:{total_out:.3f},loudnorm=I={E.get('music_lufs', -30)}:TP=-6,"
+                     f"afade=t=in:d=0.6,afade=t=out:st={total_out - 1.5:.3f}:d=1.5,aresample=48000[mu]")
         parts.append("[mu][vosc]sidechaincompress=threshold=0.05:ratio=4:attack=20:release=300[mud]")
         mix.append("[mud]"); k += 1
     for fx in sfx:
@@ -275,7 +316,7 @@ def main():
         mix.append(f"[s{k}]"); k += 1
     parts.append("".join(mix) + f"amix=inputs={len(mix)}:normalize=0:duration=first,alimiter=limit=0.89[out]")
     sh(["ffmpeg", "-y", "-v", "error", *ins_, "-filter_complex", ";".join(parts), "-map", "[out]",
-        "-t", f"{total:.3f}", "-ar", "48000", os.path.join(a.out, "audio.wav")])
+        "-t", f"{total_out:.3f}", "-ar", "48000", os.path.join(a.out, "audio.wav")])
     print("base + audio ready in", a.out)
 
 

@@ -53,6 +53,50 @@ svg.lines { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; 
 .blabel { position: absolute; top: 1080px; width: 360px; text-align: center; transform: translateX(-50%); font-family: M; font-weight: 800; font-size: 36px; color: #fff; letter-spacing: 2px;
   text-shadow: 0 0 8px rgba(255,255,255,.8); }
 .arrow { position: absolute; font-weight: 900; font-size: 120px; line-height: 1; transform: translateX(-50%); }
+/* paper grounds */
+.ins.paper .grid-wall, .ins.paper .floor-wrap { display: none; }
+.ins.paper { background-size: cover; background-position: center; }
+.ins.paper.gridlines::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(255,255,255,.22) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.22) 2px, transparent 2px);
+  background-size: 72px 72px; }
+.ins.light .title, .ins.light .lbl, .ins.light .blabel { color: #1d1915; text-shadow: none; }
+.ins.light .node { background: #1d1915; box-shadow: 0 10px 0 rgba(0,0,0,.18); }
+.ins.light .node svg { fill: #f6f0e3 !important; }
+.ins.light .card { border-color: #1d1915; background: rgba(29,25,21,.04); box-shadow: 8px 10px 0 rgba(29,25,21,.18); }
+.ins.light .card svg { fill: #1d1915; filter: none; }
+.ins.light .card .n { color: #1d1915; }
+.ins.light line { stroke: #1d1915 !important; filter: none !important; }
+/* half layout: graphic on top, torn bottom edge, speaker visible below */
+.ins.half { clip-path: var(--torn); }
+#tornwhite { position: absolute; inset: 0; background: #f7f2e8; z-index: 9; display: none; clip-path: var(--torn2); }
+.ins.half #ins-stage { transform: translateY(-150px) scale(.72); transform-origin: 540px 0; }
+#ins-stage { position: absolute; inset: 0; }
+/* light leak */
+#leak { position: absolute; inset: -10%; z-index: 49; opacity: 0; pointer-events: none; }
+/* stickers (paper cut-outs beside the speaker) */
+#stk { position: absolute; inset: 0; z-index: 20; }
+.sticker { position: absolute; width: 230px; height: 230px; margin: -115px 0 0 -115px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; border: 12px solid #fff;
+  box-shadow: 0 14px 28px rgba(0,0,0,.45); }
+.sticker svg { width: 52%; height: 52%; fill: #fff; filter: drop-shadow(0 3px 0 rgba(0,0,0,.25)); }
+.sticker .tag { position: absolute; top: 100%; left: 50%; transform: translate(-50%, 14px) rotate(-3deg); white-space: nowrap;
+  background: #fff; color: #111; font: 900 34px/1 P; padding: 10px 18px; border-radius: 10px; box-shadow: 0 8px 18px rgba(0,0,0,.35); }
+/* title band (hook) */
+#band { position: absolute; left: 0; right: 0; top: 0; height: 520px; z-index: 25; display: none;
+  background: linear-gradient(rgba(255,255,255,.08) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.08) 2px, transparent 2px), #111;
+  background-size: 64px 64px; clip-path: var(--tornband); }
+#band .s1 { position: absolute; left: 60px; right: 60px; top: 150px; font: 900 50px/1.05 P; color: #fff; letter-spacing: 1px; }
+#band .s2 { position: absolute; left: 60px; right: 60px; top: 215px; font: 900 128px/1 P; color: var(--yellow); letter-spacing: -2px;
+  text-shadow: 5px 5px 0 #000, -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000, 0 14px 30px rgba(0,0,0,.6); }
+/* statements (typed lines on paper) */
+.stmt { position: absolute; left: 90px; right: 90px; font: 900 108px/1.02 P; letter-spacing: -3px; }
+.stmt .cur { display: inline-block; width: 8px; height: 0.9em; background: currentColor; margin-left: 6px; vertical-align: -0.08em; }
+/* outro */
+#outro { position: absolute; inset: 0; z-index: 45; display: none; background-size: cover; }
+#outro img { position: absolute; left: 50%; top: 640px; width: 820px; transform: translateX(-50%); }
+#outro .o1 { position: absolute; left: 0; right: 0; top: 1060px; text-align: center; font: 900 84px/1.05 P; }
+#outro .o2 { position: absolute; left: 0; right: 0; top: 1190px; text-align: center; font: 800 46px/1.2 P; letter-spacing: 2px; }
+.w.dim { color: rgba(255,255,255,.62) !important; }
 #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 50; pointer-events: none; }
 /* ---------- CTA ---------- */
 #cta { position: absolute; left: 50%; top: 1530px; z-index: 35; display: none; align-items: center; gap: 24px; padding: 22px 40px 22px 24px;
@@ -66,8 +110,13 @@ svg.lines { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; 
 <body>
 <div id="stage">
   <div id="logo" class="abs"></div>
+  <div id="stk"></div>
+  <div id="tornwhite"></div>
   <div id="ins" class="ins"><div class="grid-wall"></div><div class="floor-wrap"><div class="floor"></div></div>
-    <div class="title" id="ins-title"></div><svg class="lines" id="ins-lines"></svg><div id="ins-body"></div></div>
+    <div id="ins-stage"><div class="title" id="ins-title"></div><svg class="lines" id="ins-lines"></svg><div id="ins-body"></div></div></div>
+  <div id="band"><div class="s1"></div><div class="s2"></div></div>
+  <div id="outro"><img><div class="o1"></div><div class="o2"></div></div>
+  <div id="leak"></div>
   <div id="cta"><div class="ic"></div><div><div class="t1"></div><div class="t2"></div></div></div>
   <div id="cap"></div>
   <div id="flash"></div>
@@ -98,9 +147,17 @@ function renderCaptions(t) {
       while ((lines() > 2 || cap.scrollWidth > cap.clientWidth + 2) && k > 0.4) { k -= 0.05; cap.style.setProperty('--k', k); }
     } else { let k = 1; cap.style.setProperty('--k', k); while (cap.scrollWidth > cap.clientWidth + 2 && k > 0.4) { k -= 0.05; cap.style.setProperty('--k', k); } }
   }
+  const half = activeIns(t)?.layout === 'half';
+  cap.style.top = (half ? 905 : Math.round((TL.caption_y || 0.68) * 1920)) + 'px';
+  const kara = TL.caption_mode === 'karaoke' && !c.hook;
   cap.querySelectorAll('.w').forEach((el, i) => {
     const w = c.words[i], p = (t - w.s) / 0.14;
-    if (p < 0) { el.style.visibility = 'hidden'; return; }
+    if (p < 0) {
+      if (kara) { el.style.visibility = 'visible'; el.classList.add('dim'); el.style.transform = 'none'; el.style.opacity = 1; }
+      else el.style.visibility = 'hidden';
+      return;
+    }
+    el.classList.remove('dim');
     el.style.visibility = 'visible';
     const s = 0.6 + 0.4 * backOut(p);
     el.style.transform = `scale(${s}) translateY(${(1 - easeOut(p)) * 18}px)${w.hl ? ' rotate(-2deg)' : ''}`;
@@ -205,7 +262,78 @@ function rStat(t, ins, lt) {
   return [html, ''];
 }
 
-const RENDER = { nodes: rNodes, cards: rCards, bars: rBars, flow: rFlow, stat: rStat };
+// typed statement lines; within a group earlier lines stay (dimmed) and the new one types on
+function rStatement(t, ins, lt) {
+  const list = groupOf(ins), k = list.indexOf(ins);
+  const lines = []; list.slice(0, k + 1).forEach((x, j) => (x.lines || []).forEach((ln) => lines.push({ ...ln, old: j < k })));
+  const ink = ins.ink || list[0].ink || '#1d1915', acc = ins.accent || list[0].accent || '#E5232B';
+  const maxLen = Math.max(...lines.map((l) => l.t.length), 1), fs = Math.min(108, Math.floor(900 / (maxLen * 0.68)));
+  const lh = Math.round(fs * 1.22), top = Math.round(940 - (lines.length * lh) / 2);
+  let html = '';
+  lines.forEach((ln, i) => {
+    const m = ln.mark ?? ins.s + 0.15 + i * 0.1;
+    const p = ln.old ? 1 : (t - m) / Math.max(0.25, ln.t.length * 0.035);
+    if (p <= 0) return;
+    const typing = !ln.old && p < 1;
+    html += `<div class="stmt" style="font-size:${fs}px;top:${top + i * lh}px;color:${ln.accent ? acc : ink};opacity:${ln.old ? 0.35 : 1}">${typed(ln.t, p)}${typing ? '<span class="cur"></span>' : ''}</div>`;
+  });
+  if (ins.icon) html += `<div class="sticker" style="left:${ins.iconX || 860}px;top:${top - 150}px;background:${acc};transform:rotate(-8deg) scale(${backOut((lt - 0.1) / 0.4)})">${svg(ins.icon)}</div>`;
+  return [html, ''];
+}
+const RENDER = { nodes: rNodes, cards: rCards, bars: rBars, flow: rFlow, stat: rStat, statement: rStatement };
+const activeIns = (t) => { let a = null; for (const ins of TL.inserts) if (t >= ins.s && t < ins.e) a = ins; return a; };
+
+// deterministic torn edge polygon (clip-path), y = edge in px
+function tornPath(edge, seed, below) {
+  let s = seed; const rnd = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+  const pts = []; for (let x = 0; x <= 1080; x += 27) pts.push(`${x}px ${Math.round(edge + (rnd() - 0.5) * 34 + Math.sin(x / 70) * 6)}px`);
+  return below ? `polygon(${pts.join(',')}, 1080px 1920px, 0px 1920px)` : `polygon(0px 0px, 1080px 0px, ${pts.reverse().join(',')})`;
+}
+function renderStickers(t, fullIns) {
+  const box = $('#stk');
+  if (fullIns) { box.innerHTML = ''; return; }
+  let html = '';
+  for (const st of TL.stickers || []) {
+    if (t < st.s || t >= st.e) continue;
+    const p = (t - st.s) / 0.35, q = (st.e - t) / 0.18;
+    const x = st.side === 'left' ? 200 : 880, y = Math.round((st.y || 0.42) * 1920);
+    const rot = (st.side === 'left' ? -8 : 8) + Math.sin((t - st.s) * 3) * 2;
+    const sc = q < 1 ? clamp(q) : backOut(p);
+    html += `<div class="sticker" style="left:${x}px;top:${y}px;background:${COLORS[st.color || 'red'][1]};transform:rotate(${rot}deg) scale(${sc})">${svg(st.icon)}${st.label ? `<div class="tag">${st.label}</div>` : ''}</div>`;
+  }
+  box.innerHTML = html;
+}
+function renderBand(t) {
+  const b = TL.band, el = $('#band');
+  if (!b || t < b.s || t >= b.e) { el.style.display = 'none'; return false; }
+  el.style.display = 'block';
+  const p = (t - b.s) / 0.4, q = (b.e - t) / 0.3;
+  el.style.transform = `translateY(${(q < 1 ? -(1 - easeOut(q)) : -(1 - easeOut(p))) * 560}px)`;
+  el.querySelector('.s1').textContent = typed(b.small, (t - b.s - 0.15) / 0.5);
+  const s2 = el.querySelector('.s2'); s2.textContent = b.big;
+  s2.style.transform = `scale(${backOut((t - b.s - 0.45) / 0.35)})`; s2.style.transformOrigin = 'left center';
+  return true;
+}
+function renderLeak(t) {
+  const el = $('#leak'); let best = null;
+  for (const x of TL.leaks || []) { const d = t - x; if (d > -0.2 && d < 0.35) { best = d; break; } }
+  if (best === null) { el.style.opacity = 0; return; }
+  const p = (best + 0.2) / 0.55, a = Math.sin(Math.PI * clamp(p)) ** 1.4;
+  const cx = -10 + 120 * p, cy = 30 + 25 * Math.sin(p * 3);
+  el.style.background = `radial-gradient(ellipse 70% 60% at ${cx}% ${cy}%, rgba(255,250,225,1) 0%, rgba(255,196,90,.95) 28%, rgba(240,110,40,.8) 52%, rgba(160,30,20,.45) 72%, rgba(0,0,0,0) 88%)`;
+  el.style.opacity = a;
+}
+function renderOutro(t) {
+  const o = TL.outro, el = $('#outro');
+  if (!o || t < o.s) { el.style.display = 'none'; return false; }
+  el.style.display = 'block';
+  const p = (t - o.s);
+  el.querySelector('img').style.transform = `translateX(-50%) scale(${0.9 + 0.1 * easeOut(p / 0.6)})`;
+  el.querySelector('img').style.opacity = clamp(p / 0.4);
+  el.querySelector('.o1').style.opacity = clamp((p - 0.35) / 0.3);
+  el.querySelector('.o2').style.opacity = clamp((p - 0.6) / 0.3);
+  return true;
+}
 
 function renderAt(t) {
   renderCaptions(t);
@@ -218,6 +346,17 @@ function renderAt(t) {
   }
   const el = $('#ins');
   el.style.display = active ? 'block' : 'none';
+  const ground = active && (active.ground || groupOf(active)[0].ground || TL.ground);
+  el.className = 'ins' + (ground && ground !== 'grid' ? ' paper' : '') + (ground && /cream/.test(ground) ? ' light' : '')
+    + (active && (active.gridlines ?? groupOf(active)[0].gridlines) ? ' gridlines' : '') + (active?.layout === 'half' ? ' half' : '');
+  el.style.backgroundImage = ground && ground !== 'grid' ? `url(textures/${ground}.jpg)` : '';
+  $('#tornwhite').style.display = active?.layout === 'half' ? 'block' : 'none';
+  renderStickers(t, active && active.layout !== 'half');
+  const bandOn = renderBand(t);
+  renderLeak(t);
+  const outroOn = renderOutro(t);
+  if (TL.logo) $('#logo').style.display = bandOn || outroOn ? 'none' : 'block';
+  if (outroOn) { $('#cap').innerHTML = ''; capKey = null; }
   if (active) {
     const lt = t - active.s;
     el.style.transform = `scale(${1.06 - 0.06 * easeOut(lt / 0.3)})`;
@@ -230,11 +369,11 @@ function renderAt(t) {
   }
   // flash on every insert boundary
   let fl = 0;
-  for (const ins of TL.inserts) for (const b of [ins.s, ins.e]) { const d = t - b; if (d >= 0 && d < 0.16) fl = Math.max(fl, 0.8 * (1 - d / 0.16)); }
+  if (TL.transition !== 'leak') for (const ins of TL.inserts) for (const b of [ins.s, ins.e]) { const d = t - b; if (d >= 0 && d < 0.16) fl = Math.max(fl, 0.8 * (1 - d / 0.16)); }
   $('#flash').style.opacity = fl;
   // CTA
   const c = TL.cta, cta = $('#cta');
-  if (c && t >= c.s) {
+  if (c && t >= c.s && !(TL.outro && t >= TL.outro.s)) {
     const p = (t - c.s) / 0.45, pulse = 1 + 0.025 * Math.sin((t - c.s) * 5);
     cta.style.display = 'flex';
     cta.style.transform = `translateX(-50%) scale(${backOut(p) * pulse})`;
@@ -245,6 +384,16 @@ window.OVL = {
   ready: false,
   async init(tl, icons) {
     TL = tl; ICON = icons;
+    const st = document.documentElement.style;
+    st.setProperty('--torn', tornPath(880, 11, false)); st.setProperty('--torn2', tornPath(900, 23, false)); st.setProperty('--tornband', tornPath(490, 5, false));
+    if (tl.outro) {
+      const o = $('#outro'), dark = !/cream/.test(tl.outro.ground || '');
+      o.style.backgroundImage = `url(textures/${tl.outro.ground || 'paper-black'}.jpg)`;
+      o.querySelector('img').src = 'file://' + (dark ? tl.logo_dark_bg || tl.logo : tl.logo);
+      o.querySelector('.o1').textContent = tl.outro.text || ''; o.querySelector('.o2').textContent = tl.outro.sub || '';
+      o.querySelector('.o1').style.color = dark ? '#fff' : '#1d1915'; o.querySelector('.o2').style.color = tl.outro.accent || '#F2E500';
+      await new Promise((r) => { const im = o.querySelector('img'); im.complete ? r() : (im.onload = r, im.onerror = r); });
+    }
     $('#cap').style.top = Math.round((tl.caption_y || 0.68) * 1920) + 'px';
     $('#cta').style.top = Math.min(1660, Math.round((tl.caption_y || 0.68) * 1920) + 224) + 'px';
     if (tl.logo) {
