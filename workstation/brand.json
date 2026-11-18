@@ -1,0 +1,12 @@
+{
+  "company_name": "Your Company",
+  "colors": { "primary": "#FFFFFF", "secondary": "#111111", "accent": "#FFD400" },
+  "font_family": "Arial",
+  "fonts_dir": null,
+  "logo_path": null,
+  "watermark": { "enabled": false, "position": "bottom_right", "opacity": 0.7, "scale": 0.12 },
+  "subtitle": { "style": "highlight", "overrides": {} },
+  "cta": { "text": "", "text_color": "#FFFFFF", "background": "#111111" },
+  "intro": { "enabled": false, "path": null },
+  "outro": { "enabled": false, "path": null }
+}
