@@ -1,0 +1,10 @@
+{
+  "name": "shorts-editor",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@fontsource/jetbrains-mono": "^5.2.5",
+    "@fontsource/poppins": "^5.2.6",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2"
+  }
+}

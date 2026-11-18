@@ -1,0 +1,495 @@
+{
+  "title": "Mindset 2: change your mind",
+  "logo": "../thyroid/logo.png",
+  "logo_dark_bg": "../thyroid/logo-white.png",
+  "music": "../.claude/skills/video-shotcraft/assets/audio/bgm/tonight-hiphop.mp3",
+  "music_lufs": -31,
+  "grade": "eq=contrast=1.12:saturation=0.92:gamma=0.96,colorbalance=rs=-.06:gs=.01:bs=.05,vignette=PI/4",
+  "transition": "leak",
+  "ground": "paper-black",
+  "caption_y": 0.735,
+  "zoom_anchor": [
+    0.5,
+    0.55
+  ],
+  "silence_db": -30,
+  "start": 0.7,
+  "end": 246.9,
+  "cut_silence_min": 0.3,
+  "remove_words": [
+    [
+      71,
+      71
+    ],
+    [
+      92,
+      92
+    ]
+  ],
+  "word_fix": {
+    "0": "",
+    "66": "DAVID",
+    "67": "BAYER,",
+    "481": "DAVID",
+    "482": "BAYER",
+    "203": "SELF-LOVE",
+    "204": "",
+    "404": "21-MONTH-OLD",
+    "405": "",
+    "406": "",
+    "639": "30-DAY",
+    "640": ""
+  },
+  "hook": {
+    "from": 0,
+    "to": 17,
+    "highlight": [
+      16,
+      16
+    ]
+  },
+  "band": {
+    "from_word": 1,
+    "to_word": 17,
+    "small": "THE BOOK THAT",
+    "big": "CHANGED MY LIFE"
+  },
+  "keywords": [
+    "BOOK",
+    "DRAMATICALLY",
+    "CHANGED",
+    "LIFE",
+    "BETTER",
+    "HUMAN",
+    "EVERY",
+    "BAYER",
+    "FIVE",
+    "PRIMARY",
+    "DRIVERS",
+    "MIND",
+    "BELIEFS",
+    "THOUGHTS",
+    "FEEL",
+    "FEELINGS",
+    "ACTIONS",
+    "RESULTS",
+    "REINFORCE",
+    "LIMITING",
+    "ENOUGH",
+    "CHILDHOOD",
+    "PARENTS",
+    "SELF-LOVE",
+    "MENTORS",
+    "LOVE",
+    "BELIEVING",
+    "YOURSELF",
+    "CONFIDENCE",
+    "SCHOOL",
+    "TRANSFORM",
+    "BODY",
+    "FOOTBALL",
+    "MYSELF",
+    "GOAL",
+    "SETTING",
+    "MANIFESTATION",
+    "PRAYING",
+    "MEDICAL",
+    "PERFECT",
+    "FOREVER",
+    "AMAZING",
+    "SKELETONS",
+    "LEARNING",
+    "PROBLEMS",
+    "PAIN",
+    "THINK",
+    "BLESSING",
+    "DIFFERENTLY",
+    "WRITE",
+    "EMPOWERING",
+    "OPPOSITE",
+    "WRONG",
+    "KEY",
+    "EVERYTHING",
+    "30-DAY",
+    "CHALLENGE",
+    "FREE",
+    "BOOK",
+    "WEEK",
+    "BLESS"
+  ],
+  "stickers": [
+    {
+      "word": 149,
+      "icon": "faChild",
+      "label": "CHILDHOOD",
+      "side": "right",
+      "color": "yellow"
+    },
+    {
+      "word": 221,
+      "icon": "faPeopleGroup",
+      "label": "FIND MENTORS",
+      "side": "left",
+      "color": "blue",
+      "dur": 2.0
+    },
+    {
+      "word": 326,
+      "icon": "faBullseye",
+      "label": "GOAL SETTING",
+      "side": "right",
+      "color": "red"
+    },
+    {
+      "word": 344,
+      "icon": "faStar",
+      "label": "MANIFEST",
+      "side": "left",
+      "color": "yellow"
+    },
+    {
+      "word": 350,
+      "icon": "faHandsPraying",
+      "label": "PRAY & BELIEVE",
+      "side": "right",
+      "color": "blue"
+    },
+    {
+      "word": 359,
+      "icon": "faUserDoctor",
+      "label": "MED SCHOOL",
+      "side": "left",
+      "color": "red"
+    },
+    {
+      "word": 409,
+      "icon": "faChild",
+      "label": "JACK",
+      "side": "right",
+      "color": "blue",
+      "dur": 2.0
+    },
+    {
+      "word": 458,
+      "icon": "faSkull",
+      "label": "SKELETONS",
+      "side": "left",
+      "color": "red"
+    },
+    {
+      "word": 688,
+      "icon": "faHeart",
+      "label": "LOVE THIS BOOK",
+      "side": "left",
+      "color": "red"
+    }
+  ],
+  "inserts": [
+    {
+      "type": "statement",
+      "ground": "paper-red",
+      "ink": "#ffffff",
+      "accent": "#F2E500",
+      "words": [
+        85,
+        91
+      ],
+      "icon": "faBrain",
+      "lines": [
+        {
+          "t": "5 PRIMARY DRIVERS",
+          "mark": 86
+        },
+        {
+          "t": "OF YOUR MIND",
+          "mark": 90,
+          "accent": true
+        }
+      ]
+    },
+    {
+      "type": "nodes",
+      "group": "cycle",
+      "ground": "paper-teal",
+      "gridlines": true,
+      "layout": "half",
+      "title": "THE 5 DRIVERS",
+      "center": {
+        "icon": "faBrain"
+      },
+      "words": [
+        94,
+        98
+      ],
+      "add": {
+        "icon": "faLightbulb",
+        "label": "BELIEFS"
+      }
+    },
+    {
+      "type": "nodes",
+      "group": "cycle",
+      "layout": "half",
+      "words": [
+        99,
+        104
+      ],
+      "add": {
+        "icon": "faComment",
+        "label": "THOUGHTS"
+      }
+    },
+    {
+      "type": "nodes",
+      "group": "cycle",
+      "layout": "half",
+      "words": [
+        105,
+        109
+      ],
+      "add": {
+        "icon": "faHeart",
+        "label": "FEELINGS"
+      }
+    },
+    {
+      "type": "nodes",
+      "group": "cycle",
+      "layout": "half",
+      "words": [
+        110,
+        115
+      ],
+      "add": {
+        "icon": "faPersonRunning",
+        "label": "ACTIONS"
+      }
+    },
+    {
+      "type": "nodes",
+      "group": "cycle",
+      "layout": "half",
+      "words": [
+        116,
+        121
+      ],
+      "add": {
+        "icon": "faTrophy",
+        "label": "RESULTS"
+      }
+    },
+    {
+      "type": "statement",
+      "layout": "half",
+      "ink": "#ffffff",
+      "accent": "#F2E500",
+      "words": [
+        134,
+        141
+      ],
+      "lines": [
+        {
+          "t": "MY LIMITING BELIEF",
+          "mark": 134
+        },
+        {
+          "t": "I'M NOT GOOD ENOUGH",
+          "mark": 138,
+          "accent": true
+        }
+      ]
+    },
+    {
+      "type": "statement",
+      "ground": "paper-red",
+      "ink": "#ffffff",
+      "accent": "#F2E500",
+      "words": [
+        199,
+        209
+      ],
+      "lines": [
+        {
+          "t": "THE #1 LIMITING BELIEF"
+        },
+        {
+          "t": "SELF-LOVE",
+          "mark": 203,
+          "accent": true
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "group": "wins",
+      "layout": "half",
+      "title": "WHAT MENTORS GAVE ME",
+      "words": [
+        272,
+        277
+      ],
+      "show": [
+        "SCHOOL"
+      ],
+      "icons": {
+        "SCHOOL": "faCrown",
+        "MY BODY": "faDumbbell",
+        "FOOTBALL": "faFootball"
+      }
+    },
+    {
+      "type": "cards",
+      "group": "wins",
+      "layout": "half",
+      "words": [
+        278,
+        281
+      ],
+      "show": [
+        "SCHOOL",
+        "MY BODY"
+      ]
+    },
+    {
+      "type": "cards",
+      "group": "wins",
+      "layout": "half",
+      "words": [
+        282,
+        291
+      ],
+      "show": [
+        "SCHOOL",
+        "MY BODY",
+        "FOOTBALL"
+      ]
+    },
+    {
+      "type": "statement",
+      "words": [
+        467,
+        480
+      ],
+      "ink": "#ffffff",
+      "accent": "#F2E500",
+      "lines": [
+        {
+          "t": "LEARNING EXPERIENCES",
+          "mark": 470
+        },
+        {
+          "t": "NOT PROBLEMS",
+          "mark": 476,
+          "accent": true
+        }
+      ]
+    },
+    {
+      "type": "flow",
+      "layout": "half",
+      "title": "THINK DIFFERENTLY",
+      "words": [
+        515,
+        523
+      ],
+      "left": {
+        "icon": "faCloudRain",
+        "label": "PROBLEM",
+        "color": "red"
+      },
+      "right": {
+        "icon": "faGift",
+        "label": "BLESSING"
+      },
+      "link": 520
+    },
+    {
+      "type": "cards",
+      "group": "steps",
+      "ground": "paper-cream",
+      "title": "WRITE IT DOWN",
+      "icon": "faPen",
+      "words": [
+        547,
+        552
+      ],
+      "show": [
+        "1 LIMITING BELIEF"
+      ]
+    },
+    {
+      "type": "cards",
+      "group": "steps",
+      "ground": "paper-cream",
+      "words": [
+        553,
+        566
+      ],
+      "show": [
+        "1 LIMITING BELIEF",
+        "2 EMPOWERING BELIEF"
+      ]
+    },
+    {
+      "type": "cards",
+      "group": "steps",
+      "ground": "paper-cream",
+      "words": [
+        570,
+        582
+      ],
+      "show": [
+        "1 LIMITING BELIEF",
+        "2 EMPOWERING BELIEF",
+        "3 PROOF FROM YOUR LIFE"
+      ]
+    },
+    {
+      "type": "statement",
+      "ground": "paper-red",
+      "ink": "#ffffff",
+      "accent": "#F2E500",
+      "words": [
+        614,
+        628
+      ],
+      "icon": "faPen",
+      "lines": [
+        {
+          "t": "HERE'S THE KEY",
+          "mark": 614
+        },
+        {
+          "t": "WRITE IT",
+          "mark": 621,
+          "accent": true
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "DAVID BAYER",
+      "words": [
+        636,
+        647
+      ],
+      "items": [
+        {
+          "value": "30 DAYS",
+          "icon": "faCalendarDays",
+          "text": "FREE CHALLENGE \u00b7 ONLINE",
+          "color": "yellow",
+          "mark": 639
+        }
+      ]
+    }
+  ],
+  "cta": null,
+  "outro": {
+    "len": 2.8,
+    "ground": "paper-black",
+    "text": "MINDSET CHALLENGE",
+    "sub": "EVERY WEEK",
+    "accent": "#F2E500"
+  }
+}

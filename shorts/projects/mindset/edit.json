@@ -1,0 +1,30 @@
+{
+  "title": "Mindset of the day",
+  "logo": "../thyroid/logo.png",
+  "logo_dark_bg": "../thyroid/logo-white.png",
+  "music": "../.claude/skills/video-shotcraft/assets/audio/bgm/g-eazy-nba-type.mp3",
+  "music_lufs": -31,
+  "caption_y": 0.725,
+  "zoom_anchor": [0.5, 0.55],
+  "start": 0.42,
+  "end": 67.32,
+  "cut_silence_min": 0.3,
+  "remove_words": [[164, 172]],
+  "word_fix": { "178": "90,000", "179": "", "184": "90%", "185": "" },
+  "hook": { "from": 0, "to": 24, "highlight": [23, 24] },
+  "keywords": ["MINDSET", "TIP", "WEIGHT", "LOSS", "PICTURE", "REFRIGERATOR", "MIRROR", "BATHROOM", "CAR", "VISOR", "DESK", "BRAIN", "DIFFERENCE", "REAL", "SEEING", "CREATES", "PERSON", "BECOME", "HAPPY", "GRATEFUL", "WEIGH", "DATE", "FEEL", "SAY", "MEAN", "BELIEVE", "HAPPEN", "90,000", "THOUGHTS", "90%", "NEGATIVE", "POSITIVE", "HEAD", "BAIRD", "LOVE"],
+  "inserts": [
+    { "type": "nodes", "group": "spots", "title": "PUT YOUR PHOTO HERE", "center": { "icon": "faImage" }, "words": [52, 56], "add": { "icon": "faKitchenSet", "label": "REFRIGERATOR" } },
+    { "type": "nodes", "group": "spots", "words": [57, 64], "add": { "icon": "faBath", "label": "BATHROOM MIRROR" } },
+    { "type": "nodes", "group": "spots", "words": [65, 67], "add": { "icon": "faCar", "label": "CAR VISOR" } },
+    { "type": "nodes", "group": "spots", "words": [68, 72], "add": { "icon": "faDesktop", "label": "YOUR DESK" } },
+    { "type": "flow", "title": "YOUR BRAIN CAN'T TELL", "words": [78, 89], "left": { "icon": "faBrain", "label": "YOUR BRAIN", "color": "blue" }, "right": { "icon": "faEye", "label": "WHAT YOU SEE" }, "link": 83, "meter": { "label": "REAL = IMAGINED", "mark": 85, "up": true } },
+    { "type": "cards", "group": "aff", "title": "MAKE IT REAL", "words": [141, 145], "show": ["FEEL IT"], "icons": { "FEEL IT": "faHeart", "SAY IT": "faComment", "BELIEVE IT": "faCircleCheck" } },
+    { "type": "cards", "group": "aff", "words": [146, 154], "show": ["FEEL IT", "SAY IT"] },
+    { "type": "cards", "group": "aff", "words": [155, 163], "show": ["FEEL IT", "SAY IT", "BELIEVE IT"], "flag": { "card": "BELIEVE IT", "at": 159, "text": "IT WILL HAPPEN" } },
+    { "type": "stat", "title": "YOUR MIND", "words": [174, 187], "items": [
+      { "value": 90000, "text": "THOUGHTS A DAY", "color": "white", "mark": 178 },
+      { "value": 90, "suffix": "%", "text": "ARE NEGATIVE", "color": "red", "mark": 184 } ] }
+  ],
+  "cta": null
+}

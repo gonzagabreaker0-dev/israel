@@ -1,0 +1,361 @@
+{
+  "title": "Stress",
+  "logo": "../thyroid/logo.png",
+  "logo_dark_bg": "../thyroid/logo-white.png",
+  "music": "../.claude/skills/video-shotcraft/assets/audio/bgm/g-eazy-nba-type.mp3",
+  "music_lufs": -31,
+  "caption_y": 0.755,
+  "zoom_anchor": [
+    0.5,
+    0.6
+  ],
+  "silence_db": -30,
+  "start": 0.0,
+  "end": 134.6,
+  "cut_silence_min": 0.3,
+  "remove_words": [
+    [
+      158,
+      161
+    ],
+    [
+      198,
+      202
+    ],
+    [
+      287,
+      290
+    ]
+  ],
+  "word_fix": {
+    "41": "80%",
+    "42": "",
+    "285": "L-THEANINE",
+    "286": "",
+    "239": ""
+  },
+  "hook": {
+    "from": 0,
+    "to": 32,
+    "highlight": [
+      31,
+      32
+    ]
+  },
+  "keywords": [
+    "STRESS",
+    "HEALTH",
+    "WEIGHT",
+    "GAIN",
+    "YES",
+    "80%",
+    "DOCTORS",
+    "CORTISOL",
+    "INCREASES",
+    "DECREASES",
+    "CHRONICALLY",
+    "SLEEP",
+    "APPETITE",
+    "SWEETS",
+    "DIGESTIVE",
+    "LEAKY",
+    "GUT",
+    "PAIN",
+    "EXERCISE",
+    "FATIGUE",
+    "IRRITABLE",
+    "BOWEL",
+    "ANXIETY",
+    "DEPRESSION",
+    "EATING",
+    "DISORDERS",
+    "HIGH",
+    "MIDSECTION",
+    "ALCOHOL",
+    "SUGAR",
+    "WORSE",
+    "BELLY",
+    "FAT",
+    "CALORIES",
+    "ADAPTOGENIC",
+    "HERBS",
+    "RHODIOLA",
+    "GINSENG",
+    "ASHWAGANDHA",
+    "B5",
+    "B6",
+    "C",
+    "L-THEANINE",
+    "GLYCINE",
+    "SALIVA",
+    "URINE",
+    "FOUR",
+    "ESTROGEN",
+    "PROGESTERONE",
+    "TESTOSTERONE",
+    "METHYLATOR",
+    "FREE",
+    "CONSULT",
+    "CLICK",
+    "BELOW",
+    "BAIRD"
+  ],
+  "inserts": [
+    {
+      "type": "stat",
+      "title": "STRESS",
+      "words": [
+        41,
+        45
+      ],
+      "items": [
+        {
+          "value": 80,
+          "suffix": "%",
+          "text": "OF DOCTOR VISITS",
+          "color": "red",
+          "mark": 41
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "CORTISOL",
+      "words": [
+        50,
+        59
+      ],
+      "bars": [
+        {
+          "label": "ACUTE STRESS",
+          "from": 0.45,
+          "to": 0.95,
+          "color": "yellow",
+          "mark": 51
+        },
+        {
+          "label": "CHRONIC STRESS",
+          "from": 0.45,
+          "to": 0.15,
+          "color": "red",
+          "mark": 58
+        }
+      ]
+    },
+    {
+      "type": "nodes",
+      "group": "cort",
+      "title": "CORTISOL AFFECTS",
+      "center": {
+        "icon": "faBolt"
+      },
+      "words": [
+        61,
+        62
+      ],
+      "add": {
+        "icon": "faBed",
+        "label": "SLEEP"
+      }
+    },
+    {
+      "type": "nodes",
+      "group": "cort",
+      "words": [
+        69,
+        71
+      ],
+      "add": {
+        "icon": "faCookie",
+        "label": "SWEET CRAVINGS"
+      }
+    },
+    {
+      "type": "nodes",
+      "group": "cort",
+      "words": [
+        79,
+        80
+      ],
+      "add": {
+        "icon": "faBacterium",
+        "label": "LEAKY GUT"
+      }
+    },
+    {
+      "type": "nodes",
+      "group": "cort",
+      "words": [
+        83,
+        84
+      ],
+      "add": {
+        "icon": "faDumbbell",
+        "label": "PAIN \u00b7 LESS EXERCISE"
+      }
+    },
+    {
+      "type": "cards",
+      "group": "lead",
+      "title": "IT CAN LEAD TO",
+      "words": [
+        108,
+        114
+      ],
+      "show": [
+        "FATIGUE",
+        "IBS",
+        "ANXIETY",
+        "DEPRESSION"
+      ],
+      "icons": {
+        "FATIGUE": "faBatteryEmpty",
+        "IBS": "faToilet",
+        "ANXIETY": "faHeadSideVirus",
+        "DEPRESSION": "faCloudRain",
+        "STRESS EATING": "faCookie",
+        "EATING DISORDERS": "faUtensils"
+      }
+    },
+    {
+      "type": "cards",
+      "group": "lead",
+      "words": [
+        119,
+        120
+      ],
+      "show": [
+        "FATIGUE",
+        "IBS",
+        "ANXIETY",
+        "DEPRESSION",
+        "STRESS EATING",
+        "EATING DISORDERS"
+      ]
+    },
+    {
+      "type": "flow",
+      "title": "HIGH CORTISOL",
+      "words": [
+        141,
+        157
+      ],
+      "left": {
+        "icon": "faBolt",
+        "label": "CORTISOL \u25b2",
+        "color": "red"
+      },
+      "right": {
+        "icon": "faWeightScale",
+        "label": "BELLY FAT"
+      },
+      "link": 147,
+      "meter": {
+        "label": "SWEET CRAVINGS \u25b2",
+        "mark": 155,
+        "up": true
+      }
+    },
+    {
+      "type": "flow",
+      "title": "ALCOHOL",
+      "words": [
+        164,
+        176
+      ],
+      "left": {
+        "icon": "faWineGlass",
+        "label": "ALCOHOL",
+        "color": "red"
+      },
+      "right": {
+        "icon": "faBacterium",
+        "label": "LEAKY GUT"
+      },
+      "link": 169
+    },
+    {
+      "type": "cards",
+      "title": "ADAPTOGENIC HERBS",
+      "words": [
+        262,
+        269
+      ],
+      "show": [
+        "RHODIOLA",
+        "GINSENG",
+        "ASHWAGANDHA"
+      ],
+      "icon": "faLeaf",
+      "flag": {
+        "card": "RHODIOLA",
+        "at": 265,
+        "text": "MY FAVORITE"
+      }
+    },
+    {
+      "type": "cards",
+      "group": "supp",
+      "title": "PLUS",
+      "words": [
+        272,
+        280
+      ],
+      "show": [
+        "B5 + B6",
+        "VITAMIN C"
+      ],
+      "icon": "faCapsules"
+    },
+    {
+      "type": "cards",
+      "group": "supp",
+      "words": [
+        285,
+        296
+      ],
+      "show": [
+        "B5 + B6",
+        "VITAMIN C",
+        "L-THEANINE",
+        "GLYCINE"
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "CORTISOL TEST",
+      "words": [
+        314,
+        322
+      ],
+      "items": [
+        {
+          "value": "4X",
+          "icon": "faVial",
+          "text": "A DAY \u00b7 SALIVA OR URINE",
+          "color": "yellow",
+          "mark": 319
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "title": "SEX HORMONES",
+      "words": [
+        343,
+        358
+      ],
+      "show": [
+        "ESTROGEN",
+        "PROGESTERONE",
+        "TESTOSTERONE"
+      ],
+      "icon": "faVial"
+    }
+  ],
+  "cta": {
+    "from_word": 380,
+    "text": "FREE CONSULT",
+    "sub": "CLICK BELOW"
+  }
+}

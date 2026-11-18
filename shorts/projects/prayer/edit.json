@@ -1,0 +1,48 @@
+{
+  "title": "Ho'oponopono prayer",
+  "logo": "../thyroid/logo.png",
+  "logo_dark_bg": "../thyroid/logo-white.png",
+  "music": "ambient",
+  "music_lufs": -29,
+  "grade": "eq=contrast=1.04:saturation=1.03:gamma=1.0,colorbalance=rs=.04:gs=.015:bs=-.04,vignette=PI/5",
+  "caption_mode": "karaoke",
+  "transition": "leak",
+  "ground": "paper-cream",
+  "caption_y": 0.70,
+  "zoom_anchor": [0.5, 0.5],
+  "silence_db": -28,
+  "start": 0.0,
+  "end": 86.4,
+  "cut_silence_min": 0.3,
+  "remove_words": [],
+  "word_fix": { "81": "HO'OPONOPONO", "82": "", "131": "HO'OPONOPONO", "132": "" },
+  "hook": { "from": 0, "to": 17, "highlight": [16, 17] },
+  "band": { "from_word": 10, "to_word": 17, "small": "HOW MANY OF YOU FIND", "big": "EXERCISE HARD?" },
+  "keywords": ["WALK", "EVERY", "DAY", "THREE", "MONTHS", "AMAZING", "HEALTH", "LEGS", "STRONGER", "BETTER", "GOD", "HO'OPONOPONO", "PRAYER", "SORRY", "LOVE", "FORGIVE", "THANK", "HEALS", "BLESSES", "HAWAII", "10", "HOME", "EVERYONE", "CLOSE", "CHALLENGING", "BLESS", "CHILD", "ADDICTION", "FRIEND", "STRUGGLING", "RECOMMEND", "CHANGED", "LIFE", "PEACE", "PRAY", "EXERCISE", "BAIRD"],
+  "stickers": [
+    { "word": 31, "icon": "faPersonWalking", "label": "WALK DAILY", "side": "right", "color": "blue" },
+    { "word": 40, "icon": "faCalendarDays", "label": "3 MONTHS", "side": "left", "color": "yellow" },
+    { "word": 54, "icon": "faPersonRunning", "label": "STRONGER", "side": "right", "color": "red" },
+    { "word": 64, "icon": "faHandsPraying", "label": "MY GOD WALK", "side": "left", "color": "blue", "dur": 2.2 },
+    { "word": 97, "icon": "faHeart", "label": "HEALS & BLESSES", "side": "right", "color": "red", "dur": 2.2 },
+    { "word": 126, "icon": "faUmbrellaBeach", "label": "HAWAII", "side": "left", "color": "yellow" },
+    { "word": 239, "icon": "faDove", "label": "PEACE", "side": "right", "color": "blue", "dur": 2.0 }
+  ],
+  "inserts": [
+    { "type": "statement", "title": "HO'OPONOPONO", "words": [84, 95], "icon": "faHandsPraying", "iconX": 880,
+      "lines": [ { "t": "I'M SORRY", "mark": 86 }, { "t": "I LOVE YOU", "mark": 88, "accent": true }, { "t": "PLEASE FORGIVE ME", "mark": 91 }, { "t": "THANK YOU", "mark": 94 } ] },
+    { "type": "stat", "ground": "paper-black", "title": "THE HAWAII WARD", "words": [140, 150], "items": [
+      { "value": 10, "text": "PATIENTS GOT BETTER & WENT HOME", "color": "yellow", "mark": 142 } ] },
+    { "type": "statement", "ground": "paper-black", "layout": "half", "ink": "#ffffff", "accent": "#F2E500", "words": [163, 174],
+      "lines": [ { "t": "THE WARD CLOSED", "mark": 166 }, { "t": "EVERYONE GOT BETTER", "mark": 172, "accent": true } ] },
+    { "type": "nodes", "group": "bless", "layout": "half", "title": "PRAY IT FOR", "center": { "icon": "faHandsPraying" }, "words": [176, 184], "add": { "icon": "faUserXmark", "label": "A HARD PERSON" } },
+    { "type": "nodes", "group": "bless", "layout": "half", "words": [185, 194], "add": { "icon": "faHeart", "label": "SOMEONE TO BLESS" } },
+    { "type": "nodes", "group": "bless", "layout": "half", "words": [195, 204], "add": { "icon": "faChild", "label": "A CHILD IN ADDICTION" } },
+    { "type": "nodes", "group": "bless", "layout": "half", "words": [205, 210], "add": { "icon": "faHandHoldingHeart", "label": "A STRUGGLING FRIEND" } },
+    { "type": "nodes", "group": "bless", "layout": "half", "words": [212, 224], "add": { "icon": "faFaceSmile", "label": "SOMEONE YOU LOVE" } },
+    { "type": "statement", "layout": "half", "words": [231, 239],
+      "lines": [ { "t": "IT CHANGED MY LIFE", "mark": 231 }, { "t": "MORE PEACE", "mark": 238, "accent": true } ] }
+  ],
+  "cta": null,
+  "outro": { "len": 2.8, "ground": "paper-cream", "text": "TRANSFORM YOUR LIFE", "sub": "502-785-7480", "accent": "#E5232B" }
+}
