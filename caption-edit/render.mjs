@@ -12,6 +12,6 @@ if (still !== null) {
   await renderStill({composition: comp, serveUrl, output: `out/still-${still}.png`, frame: still, browserExecutable, chromiumOptions});
 } else {
   await renderMedia({composition: comp, serveUrl, codec: 'h264', outputLocation: 'out/captioned.mp4', browserExecutable, chromiumOptions, crf: 18, concurrency: 4,
-    onProgress: ({progress}) => { if (Math.round(progress*100) % 10 === 0) process.stdout.write(`\r${Math.round(progress*100)}%`); }});
+    onProgress: ({renderedFrames}) => { if (renderedFrames % 100 === 0) console.log('frames', renderedFrames); }});
 }
 console.log('\ndone');
