@@ -66,7 +66,7 @@ function buildChunks(raw: W[]): Chunk[] {
   return out;
 }
 
-const ZOOM_LEVELS = [1.0, 1.13, 1.05, 1.18, 1.0, 1.1];
+const ZOOM_LEVELS = [1.0]; // no punch-ins: only a slow drift below
 
 export const Edit: React.FC<Props> = ({file, words, dur, scenes = [], hook}) => {
   const frame = useCurrentFrame();

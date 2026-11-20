@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, spring, useCurrentFrame, useVideoConfig, interpolate} from 'remotion';
 import * as L from 'lucide-react';
 
-export type Item = {label: string; icon: string; tag?: string; red?: boolean};
+export type Item = {label: string; icon: string; tag?: string; red?: boolean; at?: number};
 export type Scene = {
   start: number; end: number;
   bg: 'grid' | 'teal' | 'red' | 'paper' | 'cream';
@@ -10,7 +10,7 @@ export type Scene = {
   kind: 'nodes' | 'cards' | 'bars' | 'pair';
   center?: {icon: string; label?: string};
   items: Item[];
-  bars?: {label: string; sub?: string; h: number; color: string}[];
+  bars?: {label: string; sub?: string; h: number; color: string; at?: number}[];
 };
 
 const MONO = '"JetBrains Mono", monospace';
@@ -78,13 +78,13 @@ const Nodes: React.FC<{s: Scene}> = ({s}) => {
     <AbsoluteFill>
       <svg width="1080" height="1920" style={{position: 'absolute'}}>
         {s.items.map((it, i) => {
-          const p = interpolate(frame - (t0 + 12 + i * 6), [0, 14], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+          const p = interpolate(frame - ((it.at ?? s.start + 0.5 + i * 0.5) * fps - 4), [0, 12], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
           const [x, y] = pos[i];
           return <line key={i} x1={C[0]} y1={C[1]} x2={C[0] + (x - C[0]) * p} y2={C[1] + (y - C[1]) * p} stroke={col} strokeWidth={4} strokeOpacity={0.9} />;
         })}
       </svg>
       {s.items.map((it, i) => {
-        const a = useSp(t0 + 20 + i * 6);
+        const a = useSp((it.at ?? s.start + 0.5 + i * 0.5) * fps);
         const [x, y] = pos[i];
         const below = true;
         return (
@@ -115,7 +115,7 @@ const Cards: React.FC<{s: Scene}> = ({s}) => {
   return (
     <AbsoluteFill>
       {s.items.map((it, i) => {
-        const a = useSp(t0 + 8 + i * 7);
+        const a = useSp((it.at ?? s.start + 0.3 + i * 0.4) * 30);
         const cols = n === 1 ? 1 : 2;
         const r = Math.floor(i / cols), c = i % cols;
         const x0 = (1080 - (cols * W + (cols - 1) * G)) / 2;
@@ -142,7 +142,7 @@ const Bars: React.FC<{s: Scene}> = ({s}) => {
   return (
     <AbsoluteFill>
       {bars.map((b, i) => {
-        const a = useSp(t0 + 10 + i * 10, {damping: 16, stiffness: 90, mass: 0.9});
+        const a = useSp((b.at ?? s.start + 0.3 + i * 0.4) * 30, {damping: 16, stiffness: 90, mass: 0.9});
         const x = 540 + (i - (bars.length - 1) / 2) * 330;
         const h = 400 * b.h * a;
         return (
@@ -159,8 +159,8 @@ const Bars: React.FC<{s: Scene}> = ({s}) => {
 
 const Pair: React.FC<{s: Scene}> = ({s}) => {
   const frame = useCurrentFrame(); const t0 = s.start * 30; const col = fg(s.bg);
-  const a = useSp(t0 + 8), b = useSp(t0 + 30);
-  const p = interpolate(frame - (t0 + 16), [0, 16], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const a = useSp((s.items[0].at ?? s.start + 0.3) * 30), b = useSp((s.items[1].at ?? s.start + 1) * 30);
+  const p = interpolate(frame - ((s.items[1].at ?? s.start + 1) * 30 - 10), [0, 14], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const [A, B] = s.items;
   const node = (it: Item, x: number, k: number) => (
     <div style={{position: 'absolute', left: x - 150, top: 500, width: 300, textAlign: 'center', transform: `scale(${k})`, opacity: k}}>
@@ -182,7 +182,7 @@ export const SceneView: React.FC<{s: Scene}> = ({s}) => {
   const frame = useCurrentFrame(); const {fps} = useVideoConfig();
   const t0 = s.start * fps, t1 = s.end * fps;
   const op = Math.min(interpolate(frame, [t0, t0 + 5], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}), interpolate(frame, [t1 - 4, t1], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}));
-  const settle = interpolate(frame, [t0, t0 + 8], [1.05, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const settle = interpolate(frame, [t0, t0 + 8], [1, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const tp = Math.max(0, Math.floor((frame - t0 - 2) / 1.6));
   const title = s.title.slice(0, tp);
   return (
