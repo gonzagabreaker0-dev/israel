@@ -1,8 +1,26 @@
 import React from 'react';
 import {Composition} from 'remotion';
 import {Edit} from './Edit';
+import w0 from './words/v0.json';
+import w1 from './words/v1.json';
+import w2 from './words/v2.json';
+import w3 from './words/v3.json';
+import w4 from './words/v4.json';
+
 export const FPS = 30;
-export const DURATION = 2836; // 94.53s * 30
+// id -> [file, words, duration seconds]
+export const VIDEOS: Record<string, {file: string; words: any[]; dur: number}> = {
+  v0: {file: 'v0.mp4', words: w0, dur: 94.533},
+  v1: {file: 'v1.mp4', words: w1, dur: 104.867},
+  v2: {file: 'v2.mp4', words: w2, dur: 139.9},
+  v3: {file: 'v3.mp4', words: w3, dur: 68.133},
+  v4: {file: 'v4.mp4', words: w4, dur: 148.333},
+};
 export const Root: React.FC = () => (
-  <Composition id="Edit" component={Edit} durationInFrames={DURATION} fps={FPS} width={1080} height={1920} />
+  <>
+    {Object.entries(VIDEOS).map(([id, v]) => (
+      <Composition key={id} id={id} component={Edit} durationInFrames={Math.round(v.dur * FPS)} fps={FPS} width={1080} height={1920}
+        defaultProps={{file: v.file, words: v.words, dur: v.dur}} />
+    ))}
+  </>
 );
