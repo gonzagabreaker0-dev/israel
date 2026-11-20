@@ -3,7 +3,9 @@ import {AbsoluteFill, OffthreadVideo, Img, staticFile, useCurrentFrame, useVideo
 import './fonts.css';
 
 type W = {w: string; s: number; e: number};
-type Props = {file: string; words: W[]; dur: number};
+import {SceneView, Hook, CtaPill} from './Scenes';
+import type {Scene} from './Scenes';
+type Props = {file: string; words: W[]; dur: number; scenes?: Scene[]; hook?: {start: number; end: number; lines: [string, string]}};
 type Chunk = {words: W[]; start: number; end: number; key: number; icon?: string};
 
 const clean = (s: string) => s.toLowerCase().replace(/[^a-z0-9']/g, '');
@@ -15,7 +17,7 @@ const ICONS: Record<string, string> = {
   metabolic: '🔥', insulin: '💉', diabetes: '🩺', adrenal: '⚡', stressed: '😰', sleep: '😴',
   consult: '📞', never: '🚫', hope: '🙌', thyroid: '🦋', tired: '😴', cold: '🥶', hair: '💇', skin: '🧴', testosterone: '💪', cortisol: '😰', stress: '😰', mindset: '🧠', picture: '📸', brain: '🧠', refrigerator: '🧊', happy: '😊', medications: '💊', supplements: '💊', therapy: '🔴', pounds: '⚖️', diet: '🥗', exercise: '🏃', visit: '📞', reverse: '🔄', energy: '⚡', 'glp-1s': '💉', hormonal: '🧪',
 };
-const SIZE_KEY = 112, SIZE_NORM = 82;
+const SIZE_KEY = 118, SIZE_NORM = 72;
 
 const FIX: Record<string, string> = {barrett: 'Baird', beard: 'Baird', baird: 'Baird', barrett_: 'Baird'};
 function normalize(raw: W[]): W[] {
@@ -66,7 +68,7 @@ function buildChunks(raw: W[]): Chunk[] {
 
 const ZOOM_LEVELS = [1.0, 1.13, 1.05, 1.18, 1.0, 1.1];
 
-export const Edit: React.FC<Props> = ({file, words, dur}) => {
+export const Edit: React.FC<Props> = ({file, words, dur, scenes = [], hook}) => {
   const frame = useCurrentFrame();
   const {fps, durationInFrames} = useVideoConfig();
   const t = frame / fps;
@@ -77,6 +79,8 @@ export const Edit: React.FC<Props> = ({file, words, dur}) => {
   for (let i = 0; i < chunks.length; i++) if (chunks[i].start <= t + 0.02) idx = i;
   const chunk = idx >= 0 ? chunks[idx] : null;
   const next = chunks[idx + 1];
+  const active = scenes.find((sc) => t >= sc.start && t < sc.end);
+  const onCream = active?.bg === 'cream';
   const visible = chunk && t <= Math.min(chunk.end + 0.35, next ? next.start + 0.02 : 999);
 
   // punch-in zoom: level changes every 2 chunks, springs in
@@ -99,19 +103,14 @@ export const Edit: React.FC<Props> = ({file, words, dur}) => {
       {/* subtle bottom shade for caption legibility */}
       <AbsoluteFill style={{background: 'linear-gradient(to top, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0) 45%)'}} />
 
-      {/* logo, top-left */}
-      <div style={{position: 'absolute', left: 48, top: 70, opacity: fadeIn, padding: '14px 22px', borderRadius: 22, background: 'rgba(0,0,0,0.38)', backdropFilter: 'blur(6px)'}}>
-        <Img src={staticFile('logo-white.png')} style={{width: 330, display: 'block', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,.6))'}} />
-      </div>
+      {/* scene overlays */}
+      {scenes.map((sc, i) => (t >= sc.start - 0.05 && t <= sc.end + 0.05) ? <SceneView key={i} s={sc} /> : null)}
+      {hook && t >= hook.start && t <= hook.end + 0.1 && <Hook {...hook} />}
 
-      {/* icon pop */}
-      {chunk && visible && chunk.icon && (() => {
-        const a = spring({frame: frame - chunk.start * fps, fps, config: {damping: 10, stiffness: 200, mass: 0.6}});
-        return (
-          <div style={{position: 'absolute', right: 70, top: 120, textAlign: 'center', fontSize: 150, fontFamily: '"Noto Color Emoji"',
-            transform: `scale(${a}) rotate(${(1 - a) * -20}deg)`, filter: 'drop-shadow(0 8px 14px rgba(0,0,0,.5))'}}>{chunk.icon}</div>
-        );
-      })()}
+      {/* logo, top-left (no pill; colour version on cream) */}
+      {!(hook && t >= hook.start && t <= hook.end) && (
+        <Img src={staticFile(onCream ? 'logo-color.png' : 'logo-mix.png')} style={{position: 'absolute', left: 44, top: 78, width: 300, opacity: fadeIn, filter: onCream ? 'none' : 'drop-shadow(0 2px 6px rgba(0,0,0,.55))'}} />
+      )}
 
       {/* captions */}
       {chunk && visible && (
@@ -124,9 +123,8 @@ export const Edit: React.FC<Props> = ({file, words, dur}) => {
             return (
               <span key={i} style={{
                 fontWeight: 800, fontSize: isBig ? SIZE_KEY : isKey ? 96 : SIZE_NORM, lineHeight: 1.05,
-                color: isKey ? '#FFE600' : '#fff',
-                WebkitTextStroke: `${isKey ? 10 : 8}px #000`, paintOrder: 'stroke fill',
-                textShadow: '0 6px 0 rgba(0,0,0,.55)',
+                color: onCream ? '#1b1b1b' : '#FFD400',
+                textShadow: onCream ? 'none' : '0 4px 14px rgba(0,0,0,.75), 0 2px 3px rgba(0,0,0,.6)',
                 display: 'inline-block', transform: `scale(${0.6 + 0.4 * p})`, opacity: Math.min(1, p * 1.6),
               }}>{x.w.replace(/[.,?!]$/, '')}</span>
             );
@@ -135,13 +133,7 @@ export const Edit: React.FC<Props> = ({file, words, dur}) => {
       )}
 
       {/* end CTA */}
-      {frame >= ctaStart && (
-        <div style={{position: 'absolute', left: 0, right: 0, top: 1560, display: 'flex', justifyContent: 'center', transform: `scale(${cta})`, opacity: cta}}>
-          <div style={{background: '#FFE600', color: '#111', fontFamily: 'Poppins', fontWeight: 800, fontSize: 54, padding: '26px 54px', borderRadius: 999, boxShadow: '0 10px 30px rgba(0,0,0,.45)'}}>
-            📞 FREE CONSULT — CLICK BELOW
-          </div>
-        </div>
-      )}
+      {frame >= ctaStart && <CtaPill start={ctaStart / fps} />}
     </AbsoluteFill>
   );
 };
