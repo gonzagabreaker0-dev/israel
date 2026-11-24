@@ -7,6 +7,8 @@ import w2 from './words/v2.json';
 import w3 from './words/v3.json';
 import w4 from './words/v4.json';
 import {scenes0, hook0} from './scenes/v0';
+import w5 from './words/v5.json';
+import {scenes5, hook5} from './scenes/v5';
 
 export const FPS = 30;
 // id -> [file, words, duration seconds]
@@ -16,6 +18,7 @@ export const VIDEOS: Record<string, {file: string; words: any[]; dur: number; sc
   v2: {file: 'v2.mp4', words: w2, dur: 139.9},
   v3: {file: 'v3.mp4', words: w3, dur: 68.133},
   v4: {file: 'v4.mp4', words: w4, dur: 148.333},
+  v5: {file: 'v5.mp4', words: w5, dur: 118.243, scenes: scenes5, hook: hook5},
 };
 export const Root: React.FC = () => (
   <>
