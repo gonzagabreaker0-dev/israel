@@ -7,6 +7,9 @@ import w2 from './words/v2.json';
 import w3 from './words/v3.json';
 import w4 from './words/v4.json';
 import {scenes0, hook0} from './scenes/v0';
+import {EditPro} from './EditPro';
+import w6 from './words/v6.json';
+import {icons6, KEYS6} from './scenes/v6';
 import w5 from './words/v5.json';
 import {scenes5, hook5} from './scenes/v5';
 
@@ -26,5 +29,7 @@ export const Root: React.FC = () => (
       <Composition key={id} id={id} component={Edit} durationInFrames={Math.round(v.dur * FPS)} fps={FPS} width={1080} height={1920}
         defaultProps={{file: v.file, words: v.words, dur: v.dur, scenes: v.scenes ?? [], hook: v.hook}} />
     ))}
+    <Composition id="v6" component={EditPro as any} durationInFrames={1981} fps={FPS} width={1080} height={1920}
+      defaultProps={{file: 'v6.mp4', person: 'person6.webm', words: w6, dur: 66.025, icons: icons6, keys: KEYS6}} />
   </>
 );
