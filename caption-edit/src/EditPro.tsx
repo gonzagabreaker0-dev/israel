@@ -79,7 +79,7 @@ export const EditPro: React.FC<Props> = ({file, person, words, icons, keys}) => 
         {/* 2. icons, behind the person */}
         {icons.map((c, i) => <IconBehind key={i} cue={c} />)}
         {/* 3. person cut-out on top of the icons */}
-        <AbsoluteFill><OffthreadVideo src={staticFile(person)} transparent muted style={{width: '100%', height: '100%', objectFit: 'cover'}} /></AbsoluteFill>
+        {icons.length > 0 && <AbsoluteFill><OffthreadVideo src={staticFile(person)} transparent muted style={{width: '100%', height: '100%', objectFit: 'cover'}} /></AbsoluteFill>}
       </AbsoluteFill>
       <AbsoluteFill style={{background: 'linear-gradient(to top, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0) 40%)'}} />
       <Img src={staticFile('logo-mix.png')} style={{position: 'absolute', left: 44, top: 78, width: 300, opacity: Math.min(1, frame / 12), filter: 'drop-shadow(0 2px 6px rgba(0,0,0,.55))'}} />
