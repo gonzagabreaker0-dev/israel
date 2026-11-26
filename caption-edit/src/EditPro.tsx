@@ -52,12 +52,12 @@ const IconBehind: React.FC<{cue: IconCue}> = ({cue}) => {
 };
 
 export const EditPro: React.FC<Props> = ({file, person, words, icons, keys}) => {
-  const frame = useCurrentFrame(); const {fps} = useVideoConfig(); const t = frame / fps;
+  const frame = useCurrentFrame(); const {fps, durationInFrames} = useVideoConfig(); const t = frame / fps;
   const chunks = useMemo(() => build(words, new Set(keys)), [words, keys]);
   let idx = -1; for (let i = 0; i < chunks.length; i++) if (chunks[i].start <= t + 0.02) idx = i;
   const ch = idx >= 0 ? chunks[idx] : null; const nx = chunks[idx + 1];
   const vis = ch && t <= Math.min(ch.end + 0.35, nx ? nx.start + 0.02 : 999);
-  const creep = interpolate(frame, [0, 1981], [0, 0.03]);
+  const creep = interpolate(frame, [0, durationInFrames], [0, 0.03]);
   const word = (x: W, big: boolean, key: boolean, i: number) => {
     if (t < x.s - 0.02) return null;
     const p = spring({frame: frame - x.s * fps, fps, config: {damping: 12, stiffness: 260, mass: 0.5}});
@@ -82,7 +82,8 @@ export const EditPro: React.FC<Props> = ({file, person, words, icons, keys}) => 
         {icons.length > 0 && <AbsoluteFill><OffthreadVideo src={staticFile(person)} transparent muted style={{width: '100%', height: '100%', objectFit: 'cover'}} /></AbsoluteFill>}
       </AbsoluteFill>
       <AbsoluteFill style={{background: 'linear-gradient(to top, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0) 40%)'}} />
-      <Img src={staticFile('logo-mix.png')} style={{position: 'absolute', left: 44, top: 78, width: 300, opacity: Math.min(1, frame / 12), filter: 'drop-shadow(0 2px 6px rgba(0,0,0,.55))'}} />
+      <AbsoluteFill style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 18%)'}} />
+      <Img src={staticFile('logo-mix.png')} style={{position: 'absolute', left: 44, top: 78, width: 300, opacity: Math.min(1, frame / 12), filter: 'drop-shadow(0 0 6px rgba(0,0,0,.9)) drop-shadow(0 2px 8px rgba(0,0,0,.7))'}} />
       {/* two-line captions */}
       {ch && vis && (
         <div style={{position: 'absolute', left: 50, right: 50, top: 1290, fontFamily: 'Poppins', textTransform: 'uppercase', textAlign: 'center'}}>

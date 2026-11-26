@@ -10,6 +10,8 @@ import {scenes0, hook0} from './scenes/v0';
 import {EditPro} from './EditPro';
 import w6 from './words/v6.json';
 import {icons6, KEYS6} from './scenes/v6';
+import w7 from './words/v7.json';
+const KEYS7 = ['testosterone','important','women','men','death','alzheimer\'s','dementia','heart','attacks','strokes','fractures','prostate','cancer','checked','free','estrogen','protein','study','studies','seven','prevented','dilates','arteries','stress','smoke','alcohol','diabetes','overweight','inflammation','homocysteine','hormone','fda','suicidal','normal','amazing','energy','pain','happiest','dose','absorbed','metabolized','level','share'];
 import w5 from './words/v5.json';
 import {scenes5, hook5} from './scenes/v5';
 
@@ -31,5 +33,7 @@ export const Root: React.FC = () => (
     ))}
     <Composition id="v6" component={EditPro as any} durationInFrames={1981} fps={FPS} width={1080} height={1920}
       defaultProps={{file: 'v6.mp4', person: 'person6.webm', words: w6, dur: 66.025, icons: [] /* icons6 disabled: user preferred captions only */, keys: KEYS6}} />
+    <Composition id="v7" component={EditPro as any} durationInFrames={3910} fps={FPS} width={1080} height={1920}
+      defaultProps={{file: 'v7.mp4', person: 'person6.webm', words: w7, dur: 130.308, icons: [], keys: KEYS7}} />
   </>
 );
