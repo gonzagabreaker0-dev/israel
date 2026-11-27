@@ -32,7 +32,7 @@ export const Root: React.FC = () => (
         defaultProps={{file: v.file, words: v.words, dur: v.dur, scenes: v.scenes ?? [], hook: v.hook}} />
     ))}
     <Composition id="v6" component={EditPro as any} durationInFrames={1981} fps={FPS} width={1080} height={1920}
-      defaultProps={{file: 'v6.mp4', person: 'person6.webm', words: w6, dur: 66.025, icons: [] /* icons6 disabled: user preferred captions only */, keys: KEYS6}} />
+      defaultProps={{file: 'v6.mp4', person: 'person6.webm', words: w6, dur: 66.025, icons: [] /* icons6 disabled: user preferred captions only */, keys: KEYS6, hook: {start: 0.3, end: 3.0, lines: ['Do you use', 'Hormetic Therapy?']}, cta: true}} />
     <Composition id="v7" component={EditPro as any} durationInFrames={3910} fps={FPS} width={1080} height={1920}
       defaultProps={{file: 'v7.mp4', person: 'person6.webm', words: w7, dur: 130.308, icons: [], keys: KEYS7}} />
   </>

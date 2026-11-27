@@ -3,9 +3,10 @@ import {AbsoluteFill, OffthreadVideo, Img, staticFile, useCurrentFrame, useVideo
 import * as L from 'lucide-react';
 import './fonts.css';
 import type {IconCue} from './scenes/v6';
+import {Hook, CtaPill} from './Scenes';
 
 type W = {w: string; s: number; e: number};
-type Props = {file: string; person: string; words: W[]; dur: number; icons: IconCue[]; keys: string[]};
+type Props = {file: string; person: string; words: W[]; dur: number; icons: IconCue[]; keys: string[]; hook?: {start: number; end: number; lines: [string, string]}; cta?: boolean};
 const clean = (s: string) => s.toLowerCase().replace(/[^a-z0-9']/g, '');
 const YEL = '#FFD400';
 
@@ -51,7 +52,7 @@ const IconBehind: React.FC<{cue: IconCue}> = ({cue}) => {
   );
 };
 
-export const EditPro: React.FC<Props> = ({file, person, words, icons, keys}) => {
+export const EditPro: React.FC<Props> = ({file, person, words, dur, icons, keys, hook, cta}) => {
   const frame = useCurrentFrame(); const {fps, durationInFrames} = useVideoConfig(); const t = frame / fps;
   const chunks = useMemo(() => build(words, new Set(keys)), [words, keys]);
   let idx = -1; for (let i = 0; i < chunks.length; i++) if (chunks[i].start <= t + 0.02) idx = i;
@@ -83,7 +84,8 @@ export const EditPro: React.FC<Props> = ({file, person, words, icons, keys}) => 
       </AbsoluteFill>
       <AbsoluteFill style={{background: 'linear-gradient(to top, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0) 40%)'}} />
       <AbsoluteFill style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 18%)'}} />
-      <Img src={staticFile('logo-mix.png')} style={{position: 'absolute', left: 44, top: 78, width: 300, opacity: Math.min(1, frame / 12), filter: 'drop-shadow(0 0 6px rgba(0,0,0,.9)) drop-shadow(0 2px 8px rgba(0,0,0,.7))'}} />
+      {hook && t >= hook.start && t <= hook.end + 0.1 && <Hook {...hook} />}
+      {!(hook && t >= hook.start && t <= hook.end) && <Img src={staticFile('logo-mix.png')} style={{position: 'absolute', left: 44, top: 78, width: 300, opacity: Math.min(1, frame / 12), filter: 'drop-shadow(0 0 6px rgba(0,0,0,.9)) drop-shadow(0 2px 8px rgba(0,0,0,.7))'}} />}
       {/* two-line captions */}
       {ch && vis && (
         <div style={{position: 'absolute', left: 50, right: 50, top: 1290, fontFamily: 'Poppins', textTransform: 'uppercase', textAlign: 'center'}}>
@@ -93,6 +95,7 @@ export const EditPro: React.FC<Props> = ({file, person, words, icons, keys}) => 
           </div>
         </div>
       )}
+      {cta && t >= dur - 5.3 && <CtaPill start={dur - 5.3} />}
     </AbsoluteFill>
   );
 };
